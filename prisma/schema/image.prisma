@@ -1,0 +1,11 @@
+model Image {
+    id        String   @id @default(cuid()) @map("_id") 
+    alt String
+    src String
+    classifiedId String @map("classified_id")
+    classified Classified @relation(fields: [classifiedId] , references: [id])
+    blurhash String
+    isMain Boolean @default(false) @map("is_main")
+
+    @@map("images")
+}

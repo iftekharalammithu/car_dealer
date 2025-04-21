@@ -1,3 +1,7 @@
+// Update the Database
+// node merge-schema.js
+// npx prisma db push --schema prisma/merged.prisma
+// npx prisma generate --schema prisma/merged.prisma
 
 generator client {
   provider = "prisma-client-js"

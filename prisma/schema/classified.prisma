@@ -1,0 +1,93 @@
+model Classified {
+    id        String   @id @default(cuid()) @map("_id") 
+    views Int @default(0)
+    slug String @unique
+    vrm String?
+    title String?
+    description String?
+    year Int
+    odoReading Int @default(0) @map("odo_reading")
+    doors Int @default(2)
+    seats Int @default(5)
+    price Int @default(0) @map("price")
+    makeId String @map("make_id") // the @map use to save the data as name of make_id
+    make Make @relation(fields: [makeId] , references: [id])
+    modelId String @map("model_id")
+    model Model @relation(fields: [modelId] , references: [id])
+    modelVariantId String @map("model_variant_id")
+    modelVariant ModelVariant? @relation(fields: [modelVariantId], references: [id])
+    ulezCompliance ULEZCompliance @default(EXEMPT)
+    transmission Transmission @default(MANUAL)
+    color Color @default(BLACK)
+    fuelType FuelType @default(PETROL)
+    bodyType BodyType @default(SEDAN)
+    odoUnit OdoUnit @default(MILES)
+    current CurrentCode @default(GBP)
+    status ClassifiedStatus @default(DRAFT)
+    images Image[]
+    customers Customer[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([makeId , modelId] , name: "index_make_model")
+    @@index([status] , name: "index_status")
+    @@index([price] , name: "index_price")
+    @@map("classifieds")  //the @@map use for save the model in databese as name of classifieds
+}
+
+enum ClassifiedStatus {
+    LIVE
+    DRAFT
+    SOLD
+}
+
+enum CurrentCode {
+    GBP
+    USD
+    EUR
+}
+
+enum OdoUnit {
+    MILES
+    KILOMETERS
+}
+
+enum BodyType {
+    SEDAN
+    HATCHBACK
+    SUV
+    COUPE
+    CONVERTIBLE
+    WAGON
+}
+
+enum FuelType {
+    PETROL
+    DIESEL
+    ELECTRIC
+    HYBRID
+}
+
+enum Color {
+    BLACK
+    BLUE
+    BROWN
+    GOLD
+    GREEN
+    ORANGE
+    PINK
+    PURPLE
+    RED
+    SILVER
+    WHITE
+    YELLOW
+}
+
+enum Transmission {
+    MANUAL
+    AUTOMATIC
+}
+enum ULEZCompliance {
+    EXEMPT
+    NON_EXEMPT
+}

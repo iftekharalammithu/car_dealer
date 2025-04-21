@@ -1,8 +1,11 @@
 // schema.prisma
+// Update the Database
+// node merge-schema.js
+// npx prisma db push --schema prisma/merged.prisma
+// npx prisma generate --schema prisma/merged.prisma
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["multiSchema", "prismaSchemaFolder", "strictUndefinedChecks", "driverAdapters"]
 }
 
 datasource db {
@@ -10,11 +13,173 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Update the Database
-// node merge-schema.js
-// npx prisma db push --schema prisma/merged.prisma
-// npx prisma generate --schema prisma/merged.prisma
 
+
+// classified.prisma
+model Classified {
+    id        String   @id @default(cuid()) @map("_id") 
+    views Int @default(0)
+    slug String @unique
+    vrm String?
+    title String?
+    description String?
+    year Int
+    odoReading Int @default(0) @map("odo_reading")
+    doors Int @default(2)
+    seats Int @default(5)
+    price Int @default(0) @map("price")
+    makeId String @map("make_id") // the @map use to save the data as name of make_id
+    make Make @relation(fields: [makeId] , references: [id])
+    modelId String @map("model_id")
+    model Model @relation(fields: [modelId] , references: [id])
+    modelVariantId String @map("model_variant_id")
+    modelVariant ModelVariant? @relation(fields: [modelVariantId], references: [id])
+    ulezCompliance ULEZCompliance @default(EXEMPT)
+    transmission Transmission @default(MANUAL)
+    color Color @default(BLACK)
+    fuelType FuelType @default(PETROL)
+    bodyType BodyType @default(SEDAN)
+    odoUnit OdoUnit @default(MILES)
+    current CurrentCode @default(GBP)
+    status ClassifiedStatus @default(DRAFT)
+    images Image[]
+    customers Customer[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([makeId , modelId] , name: "index_make_model")
+    @@index([status] , name: "index_status")
+    @@index([price] , name: "index_price")
+    @@map("classifieds")  //the @@map use for save the model in databese as name of classifieds
+}
+
+enum ClassifiedStatus {
+    LIVE
+    DRAFT
+    SOLD
+}
+
+enum CurrentCode {
+    GBP
+    USD
+    EUR
+}
+
+enum OdoUnit {
+    MILES
+    KILOMETERS
+}
+
+enum BodyType {
+    SEDAN
+    HATCHBACK
+    SUV
+    COUPE
+    CONVERTIBLE
+    WAGON
+}
+
+enum FuelType {
+    PETROL
+    DIESEL
+    ELECTRIC
+    HYBRID
+}
+
+enum Color {
+    BLACK
+    BLUE
+    BROWN
+    GOLD
+    GREEN
+    ORANGE
+    PINK
+    PURPLE
+    RED
+    SILVER
+    WHITE
+    YELLOW
+}
+
+enum Transmission {
+    MANUAL
+    AUTOMATIC
+}
+enum ULEZCompliance {
+    EXEMPT
+    NON_EXEMPT
+}
+
+// customer.prisma
+model Customer {
+    id        String   @id @default(cuid()) @map("_id") 
+    firstName String @map("first_name")
+    lastName String @map("last_name")
+    email String 
+    mobile String?
+    bookingDate DateTime? @map("booking_date")
+    termsAccepted Boolean @default(false) @map("terms_accepted")
+    status CustomerStatus @default(INTERESTED)
+    classfiedId String? @map("classfied_id")
+    classfied Classified? @relation(fields: [classfiedId] ,references: [id] , onDelete: Cascade)
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    lifeCycles CustomerLifeCycle[] 
+
+
+    @@map("customers")
+
+}
+
+enum CustomerStatus {
+    INTERESTED
+    SUBSCRIBER
+    CONTACTED
+    PURCHASED
+    COLD
+}
+
+// customer_lifecycle.prisma
+model CustomerLifeCycle {
+    id        String   @id @default(cuid()) @map("_id")
+    customerId String @map("customer_id")
+    customer Customer @relation(fields: [customerId] , references: [id], onDelete: Cascade)
+    oldStatus CustomerStatus @map("old_status")
+    newStatus CustomerStatus @map("new_status")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([customerId ])
+    @@map("customer_lifecycle")
+}
+
+
+
+// image.prisma
+model Image {
+    id        String   @id @default(cuid()) @map("_id") 
+    alt String
+    src String
+    classifiedId String @map("classified_id")
+    classified Classified @relation(fields: [classifiedId] , references: [id])
+    blurhash String
+    isMain Boolean @default(false) @map("is_main")
+
+    @@map("images")
+}
+
+// page_view.prisma
+model PageView {
+    id        String   @id @default(cuid()) @map("_id")
+    path String
+    viewedAt DateTime @default(now()) @map("viewed_at")
+    ipAddress String?
+    userAgent String?
+    referrer String?
+
+    @@index([path , viewedAt])
+    @@map("page_views")
+}
 
 // session.prisma
 model Session {
@@ -26,6 +191,48 @@ model Session {
     user User @relation(fields: [userId] , references: [id] , onDelete: Cascade)
 
     @@map("sessions")
+}
+
+// taxonomy.prisma
+model Make {
+    id String @id @default(cuid()) @map("_id")
+    name String @unique
+    image String
+    models Model[]
+    classifieds Classified[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("makes")
+    
+}
+
+model Model {
+    id        String   @id @default(cuid()) @map("_id")
+    name String
+    makeId String @map("make_id")
+    make Make @relation(fields: [makeId] , references: [id] , onDelete: Cascade)
+    modelVariants ModelVariant[]
+    classifieds Classified[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([makeId,name])
+    @@map("models")
+}
+
+model ModelVariant {
+    id        String   @id @default(cuid()) @map("_id")
+    name String
+    modelId String @map("model_id")
+    yearStart Int
+    yearEnd Int
+    model Model @relation(fields: [modelId] , references: [id] , onDelete: Cascade)
+    classfiends Classified[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+     @@map("model_variants")
 }
 
 // user.prisma
