@@ -1,0 +1,42 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["multiSchema", "prismaSchemaFolder", "strictUndefinedChecks", "driverAdapters"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Update the Database
+// node merge-schema.js
+// npx prisma db push --schema prisma/merged.prisma
+// npx prisma generate --schema prisma/merged.prisma
+
+
+// session.prisma
+model Session {
+    id String @id @default(cuid())  @map("_id")
+    sessionToken String @unique @map("session_token")
+    userId String @map("user_id")
+    expires DateTime
+    requires2FA Boolean @default(true)
+    user User @relation(fields: [userId] , references: [id] , onDelete: Cascade)
+
+    @@map("sessions")
+}
+
+// user.prisma
+model User {
+  id        String   @id @default(uuid()) @map("_id")
+  email     String   @unique
+  hashedpassword  String @map("hashed_password")
+  sessions Session[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
