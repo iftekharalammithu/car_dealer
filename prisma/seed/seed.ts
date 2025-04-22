@@ -4,7 +4,7 @@ import { seedClassifieds } from "./classifiedseed";
 
 
 // why seed?
-// seed use to test the database for cheak
+// seed use to test the database for check
 // i didn't complete this seed section bcz its take too much time . i check menualy all the model works great.
 
 const prisma = new PrismaClient();
