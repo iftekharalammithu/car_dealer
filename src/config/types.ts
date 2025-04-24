@@ -16,3 +16,13 @@ export type AwaitedPageProps = {
 export type ClassifiedWithImages = Prisma.ClassifiedGetPayload<{
   include: { images: true };
 }>;
+
+export enum MultiStapFormEnum {
+  WELCOME = 1,
+  SELECT_DATE = 2,
+  SELECT_DETAILS = 3,
+}
+
+export interface Favourites {
+  ids: string[];
+}
