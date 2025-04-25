@@ -3,11 +3,7 @@ import { routes } from "@/config/route";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import {
-  ClassifiedWithImages,
-  Favourites,
-  MultiStapFormEnum,
-} from "@/config/types";
+import { ClassifiedWithImages, MultiStapFormEnum } from "@/config/types";
 import { HTMLParser } from "../shared/html_parser";
 import { CircleGauge, Cog, Fuel, Paintbrush2 } from "lucide-react";
 import { Color, FuelType, OdoUnit, Transmission } from "@prisma/client";

@@ -9,7 +9,7 @@ export default function Home() {
   const [search, setSearch] = useQueryState("search");
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen  flex-col">
       <h1>Hello world</h1>
       <Button
         onClick={() =>
