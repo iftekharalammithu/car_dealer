@@ -126,7 +126,9 @@ const CustomPagination = (props: PaginationProps) => {
                   isActive && styles.paginationLinkActive
                 )}
                 {...(rel ? { rel } : {})}
-              ></PaginationLink>
+              >
+                {page}
+              </PaginationLink>
             </PaginationItem>
           );
         })}

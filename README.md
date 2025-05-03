@@ -11,3 +11,7 @@ There use case is
 
 - Enforce API rate limits (e.g., 10 requests per minute per user)
 - Prevent abuse of your APIs.
+
+### NUQS
+
+Type-safe search params state manager for React frameworks. Like useState, but stored in the URL query string.
