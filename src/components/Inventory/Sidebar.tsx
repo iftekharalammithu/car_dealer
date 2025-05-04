@@ -4,8 +4,9 @@ import { AwaitedPageProps } from "@/config/types";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { parseAsString, useQueryStates } from "nuqs";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import SearchInput from "../shared/SearchInput";
+import TaxonomyFilter from "./TaxonomyFilter";
 
 interface SidebarProps extends AwaitedPageProps {
   minMaxValues: any;
@@ -39,6 +40,7 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
   );
 
   useEffect(() => {
+    console.log("Sidebar Search Params");
     const filterCount = Object.entries(
       searchParams as Record<string, string>
     ).filter(([keyframes, value]) => {
@@ -52,6 +54,23 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
     const url = new URL(routes.inventory, process.env.NEXT_PUBLIC_APP_URL);
     window.location.replace(url.toString());
   };
+
+  const handleChange = async (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setQueryStates({
+      [name]: value || null,
+    });
+    if (name === "make") {
+      setQueryStates({
+        model: null,
+        modelVariant: null,
+      });
+    }
+    router.refresh();
+  };
+
   return (
     <div className=" py-4 bdr w-[21.25rem] bg-white  border-r border-muted block">
       <div>
@@ -73,7 +92,16 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
         <div className=" mt-2"></div>
       </div>
       <div className=" p-4">
-        <SearchInput></SearchInput>
+        <SearchInput
+          placeholder="Search  Classifiers..."
+          className=" w-full  px-3 py-2 border rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+        ></SearchInput>
+      </div>
+      <div className=" p-4 space-y-2">
+        <TaxonomyFilter
+          searchParams={searchParams}
+          handleChange={handleChange}
+        ></TaxonomyFilter>
       </div>
     </div>
   );

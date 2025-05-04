@@ -32,7 +32,7 @@ const getInventory = async (searchParams: AwaitedPageProps["searchParams"]) => {
 
 const page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
-  console.log(searchParams);
+  // console.log("Search Params", searchParams);
 
   const classifieds = await getInventory(searchParams);
   // console.log(classifieds);
