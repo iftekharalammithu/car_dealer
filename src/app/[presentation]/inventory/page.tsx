@@ -1,4 +1,5 @@
 import ClassfiedList from "@/components/Inventory/ClassfiedList";
+import Sidebar from "@/components/Inventory/Sidebar";
 import CustomPagination from "@/components/shared/CustomPagination";
 import { CLASSIFIED_PER_PAGE } from "@/config/constants";
 import { routes } from "@/config/route";
@@ -45,7 +46,7 @@ const page = async (props: PageProps) => {
 
   return (
     <div className="  flex">
-      {/* <Sidebar></Sidebar> */}
+      <Sidebar minMaxValues={null} searchParams={searchParams}></Sidebar>
       <div className=" flex-1 p-4 bg-white">
         <div className=" flex space-y-2 flex-col  items-center justify-between pb-4 -mt-1">
           <div className=" flex justify-between items-center w-full">

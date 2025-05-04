@@ -131,7 +131,7 @@ const Classified_card = ({ classified, favourites }: ClassifiedCardProps) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="bg-white relative rounded-md shadow-md overflow-hidden flex flex-col"
+          className="bg-white relative  rounded-md shadow-md overflow-hidden flex flex-col"
         >
           <div className="relative w-full h-[500px] max-w-[800px]">
             <Link href={routes.singleClassified(classified.slug)}>
