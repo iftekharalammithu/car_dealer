@@ -16,6 +16,6 @@ There use case is
 
 Type-safe search params state manager for React frameworks. Like useState, but stored in the URL query string.
 
-### Debounce
+### ### Debounce
 
-It Debounce the search input, which means it will wait for a second before executing the function passed to it. This is useful for preventing too many requests being sent to the server when the user is typing in the search input.
+It [debounces](src/components/shared/SearchInput.tsx) the search input, which means it will wait for a second before executing the function passed to it. This is useful for preventing too many requests being sent to the server when the user is typing in the search input.
