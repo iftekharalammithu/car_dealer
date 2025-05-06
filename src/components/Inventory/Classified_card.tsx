@@ -133,17 +133,19 @@ const Classified_card = ({ classified, favourites }: ClassifiedCardProps) => {
           transition={{ duration: 0.2 }}
           className="bg-white relative  rounded-md shadow-md overflow-hidden flex flex-col"
         >
-          <div className="relative w-full h-[500px] max-w-[800px]">
+          <div className="w-full h-64 relative">
             <Link href={routes.singleClassified(classified.slug)}>
               <Image
                 placeholder="blur"
                 blurDataURL={classified.images[0].blurhash}
                 src={classified.images[0].src}
                 alt={classified.images[0].alt}
-                className="object-cover"
+                className="object-cover w-full h-full"
+                loading="lazy"
                 quality={25}
-                fill
-              ></Image>
+                width={1920}
+                height={1200}
+              />
             </Link>
             <Favourite_button
               setIsFavourite={setIsFavourite}
@@ -156,7 +158,7 @@ const Classified_card = ({ classified, favourites }: ClassifiedCardProps) => {
               </p>
             </div>
           </div>
-          <div className="p-4 flex flex-col space-y-3 ">
+          <div className="p-4 flex  flex-col space-y-3 ">
             <div>
               <Link
                 className=" text-sm md:text-base lg:text-lg font-semibold line-clamp-1 transition  hover:text-primary"

@@ -7,15 +7,48 @@ import { AwaitedPageProps, Favourites, PageProps } from "@/config/types";
 import prisma from "@/lib/prismadb";
 import { redis } from "@/lib/radis_store";
 import { getSourceId } from "@/lib/source_id";
+import { ClassifiedStatus, Prisma } from "@prisma/client";
 import React from "react";
 import { z } from "zod";
 
+const PageSchema = z
+  .string()
+  .transform((value) => Math.max(Number(value), 1))
+  .optional();
+
+const ClassifiedSchema = z.object({
+  q: z.string().optional(),
+  make: z.string().optional(),
+  model: z.string().optional(),
+  modelVariant: z.string().optional(),
+  minYear: z.string().optional(),
+  maxYear: z.string().optional(),
+  minPrice: z.string().optional(),
+  maxPrice: z.string().optional(),
+  minReading: z.string().optional(),
+  maxReading: z.string().optional(),
+  currency: z.string().optional(),
+  odoUnit: z.string().optional(),
+  transmission: z.string().optional(),
+  fuelType: z.string().optional(),
+  bodyType: z.string().optional(),
+  door: z.string().optional(),
+  seats: z.string().optional(),
+  ulezCompliance: z.string().optional(),
+});
+
+const buildClassifiedQuery = (
+  searchParams: AwaitedPageProps["searchParams"] | undefined
+): Prisma.ClassifiedWhereInput => {
+  const { data } = ClassifiedSchema.safeParse(searchParams);
+  if (!data) {
+    return { status: ClassifiedStatus.LIVE };
+  }
+  return {};
+};
+
 const getInventory = async (searchParams: AwaitedPageProps["searchParams"]) => {
-  const validPage = z
-    .string()
-    .transform((value) => Math.max(Number(value), 1))
-    .optional()
-    .parse(searchParams?.page);
+  const validPage = PageSchema.parse(searchParams?.page);
 
   const page = validPage ? validPage : 1;
   const offset = (page - 1) * CLASSIFIED_PER_PAGE;
@@ -35,7 +68,7 @@ const page = async (props: PageProps) => {
   // console.log("Search Params", searchParams);
 
   const classifieds = await getInventory(searchParams);
-  // console.log(classifieds);
+  // console.log("Classifieds==>", classifieds);
   const count = await prisma.classified.count({
     where: {},
   });

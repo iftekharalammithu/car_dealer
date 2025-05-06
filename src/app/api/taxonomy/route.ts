@@ -1,3 +1,4 @@
+import prisma from "@/lib/prismadb";
 import { Model, ModelVariant } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,16 +18,17 @@ export const GET = async (req: NextRequest) => {
       models = await prisma.model.findMany({
         select: { id: true, name: true },
         where: {
-          make: { id: Number(params.get("make")) },
+          make: { id: params.get("make") },
         },
       });
+      // console.log("api working 3 ", models);
     }
 
     let modelVariants: ModelVariant[] = [];
     if (params.get("make") && params.get("model")) {
       modelVariants = await prisma.modelVariant.findMany({
         where: {
-          model: { id: Number(params.get("model")) },
+          model: { id: params.get("model") },
         },
       });
     }
@@ -58,6 +60,7 @@ export const GET = async (req: NextRequest) => {
     );
   } catch (error) {
     if (error instanceof Error) {
+      console.error("Error fetching taxonomy data:", error.message);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
     return NextResponse.json(

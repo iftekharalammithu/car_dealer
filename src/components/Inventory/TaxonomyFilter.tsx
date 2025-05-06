@@ -22,7 +22,7 @@ const TaxonomyFilter = (props: TaxonomyFilterProps) => {
   useEffect(() => {
     (async function fetchMakesOptions() {
       const params = new URLSearchParams();
-      console.log("taxonomy filter", searchParams);
+      // console.log("taxonomy filter", searchParams);
       for (const [key, value] of Object.entries(
         searchParams as Record<string, string>
       )) {
@@ -38,7 +38,7 @@ const TaxonomyFilter = (props: TaxonomyFilterProps) => {
           models: FilterOptions<string, string>;
           modelVariants: FilterOptions<string, string>;
         }>(url.toString());
-        console.log(data);
+        console.log("Data From Tax ==> ", data);
         setmakes(data.makes);
         setmodel(data.models);
         setmodelVariant(data.modelVariants);

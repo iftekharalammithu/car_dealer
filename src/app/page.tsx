@@ -29,7 +29,7 @@ export default function Home() {
           Get Started
         </Button>
 
-        <Link href="/sdfd/inventory">
+        <Link href="/inventory">
           <Button className="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow-lg hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-transform transform hover:scale-105">
             View Inventory
           </Button>
