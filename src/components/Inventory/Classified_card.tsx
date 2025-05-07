@@ -6,80 +6,22 @@ import React, { useEffect, useState } from "react";
 import { ClassifiedWithImages, MultiStapFormEnum } from "@/config/types";
 import { HTMLParser } from "../shared/html_parser";
 import { CircleGauge, Cog, Fuel, Paintbrush2 } from "lucide-react";
-import { Color, FuelType, OdoUnit, Transmission } from "@prisma/client";
 import { Button } from "../ui/button";
 import Favourite_button from "./favourite_button";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  formatColor,
+  formatFualType,
+  formatNumber,
+  formatOdometerUnit,
+  formatPrice,
+  formatTransmission,
+} from "@/lib/utils";
 
 interface ClassifiedCardProps {
   classified: ClassifiedWithImages;
   favourites: string[];
-}
-
-function formatNumber(
-  number: number | null,
-  options?: Intl.NumberFormatOptions
-) {
-  if (!number) {
-    return "0";
-  }
-  return new Intl.NumberFormat("en-GB", options).format(number);
-}
-
-function formatOdometerUnit(unit: OdoUnit) {
-  return unit === OdoUnit.MILES ? "mi" : "km";
-}
-
-function formatTransmission(transmission: Transmission) {
-  return transmission === Transmission.AUTOMATIC ? "Automatic" : "Manual";
-}
-
-function formatFualType(fuenType: FuelType) {
-  switch (fuenType) {
-    case FuelType.DIESEL:
-      return "Diesel";
-    case FuelType.ELECTRIC:
-      return "Electric";
-    case FuelType.HYBRID:
-      return "Hybrid";
-    case FuelType.PETROL:
-      return "Petrol";
-    default:
-      return "Unknown";
-  }
-}
-
-function formarColor(color: Color) {
-  switch (color) {
-    case Color.BLACK:
-      return "Black";
-    case Color.BLUE:
-      return "Blue";
-    case Color.BROWN:
-      return "Brown";
-    case Color.GREEN:
-      return "Green";
-    case Color.ORANGE:
-      return "Orange";
-    case Color.RED:
-      return "Red";
-    case Color.SILVER:
-      return "Silver";
-    case Color.WHITE:
-      return "White";
-    case Color.YELLOW:
-      return "Yellow";
-    case Color.GOLD:
-      return "Gold";
-    case Color.PURPLE:
-      return "Purple";
-    case Color.PINK:
-      return "Pink";
-
-    default:
-      return "Unknown";
-  }
 }
 
 const getKeyClassifiedInfo = (classified: ClassifiedWithImages) => {
@@ -104,7 +46,7 @@ const getKeyClassifiedInfo = (classified: ClassifiedWithImages) => {
     {
       id: "color",
       icon: <Paintbrush2 className=" w-4 h-4"></Paintbrush2>,
-      value: formarColor(classified.color),
+      value: formatColor(classified.color),
     },
   ];
 };
@@ -154,7 +96,10 @@ const Classified_card = ({ classified, favourites }: ClassifiedCardProps) => {
             ></Favourite_button>
             <div className="absolute top-2.5 right-3.5 bg-primary text-slate-50 rounded font-bold px-2 py-1">
               <p className="text-xs lg:text-base xl:text-lg font-semibold">
-                {classified.price}
+                {formatPrice({
+                  price: classified.price,
+                  currency: classified.current,
+                })}
               </p>
             </div>
           </div>

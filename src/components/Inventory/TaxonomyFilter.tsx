@@ -1,18 +1,13 @@
-import { AwaitedPageProps } from "@/config/types";
-import React, { ChangeEvent, useEffect, useState } from "react";
+"use client";
+import { FilterOptions, TaxonomyFilterProps } from "@/config/types";
+import React, { useEffect, useState } from "react";
 import Select from "../ui/select";
 import { endpoints } from "@/config/endpoints";
 import { api } from "@/lib/api-client";
 
-interface TaxonomyFilterProps extends AwaitedPageProps {
-  handleChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-}
-
-type FilterOptions<LType, VType> = Array<{ label: LType; value: VType }>;
-
 const TaxonomyFilter = (props: TaxonomyFilterProps) => {
   const { searchParams, handleChange } = props;
-  // console.log(searchParams);
+  // console.log("Search Params", searchParams);
   const [makes, setmakes] = useState<FilterOptions<string, string>>([]);
   const [model, setmodel] = useState<FilterOptions<string, string>>([]);
   const [modelVariant, setmodelVariant] = useState<
@@ -26,23 +21,22 @@ const TaxonomyFilter = (props: TaxonomyFilterProps) => {
       for (const [key, value] of Object.entries(
         searchParams as Record<string, string>
       )) {
-        console.log("calling api...");
+        // console.log("calling api...");
         if (value) {
           params.set(key, value as string);
         }
-
-        const url = new URL(endpoints.taxonomy, window.location.href);
-        url.search = params.toString();
-        const data = await api.get<{
-          makes: FilterOptions<string, string>;
-          models: FilterOptions<string, string>;
-          modelVariants: FilterOptions<string, string>;
-        }>(url.toString());
-        console.log("Data From Tax ==> ", data);
-        setmakes(data.makes);
-        setmodel(data.models);
-        setmodelVariant(data.modelVariants);
       }
+      const url = new URL(endpoints.taxonomy, window.location.href);
+      url.search = params.toString();
+      const data = await api.get<{
+        makes: FilterOptions<string, string>;
+        models: FilterOptions<string, string>;
+        modelVariants: FilterOptions<string, string>;
+      }>(url.toString());
+      // console.log("Data From Tax ==> ", data);
+      setmakes(data.makes);
+      setmodel(data.models);
+      setmodelVariant(data.modelVariants);
     })();
   }, [searchParams]);
 
