@@ -40,7 +40,7 @@ model Classified {
     fuelType FuelType @default(PETROL)
     bodyType BodyType @default(SEDAN)
     odoUnit OdoUnit @default(MILES)
-    current CurrentCode @default(GBP)
+    currency CurrencyCode @default(GBP)
     status ClassifiedStatus @default(DRAFT)
     images Image[]
     customers Customer[]
@@ -59,7 +59,7 @@ enum ClassifiedStatus {
     SOLD
 }
 
-enum CurrentCode {
+enum CurrencyCode {
     GBP
     USD
     EUR

@@ -22,6 +22,7 @@ const Select = (props: SelectProps) => {
     onDefault = true,
     ...rest
   } = props;
+  // console.log("call", value);
   return (
     <div className={cn(" mt-1", className)}>
       {label && <h4 className=" text-sm font-semibold">{label}</h4>}

@@ -1,11 +1,11 @@
 "use client";
 import { routes } from "@/config/route";
-import { AwaitedPageProps } from "@/config/types";
+import { SidebarProps } from "@/config/types";
 import {
   cn,
   formatBodyType,
   formatColor,
-  formatFualType,
+  formatFuelType,
   formatOdometerUnit,
   formatTransmission,
   formatUlezCompliance,
@@ -19,29 +19,13 @@ import RangeFilter from "./RangeFilter";
 import {
   BodyType,
   Color,
-  CurrentCode,
+  CurrencyCode,
   FuelType,
   OdoUnit,
-  Prisma,
   Transmission,
   ULEZCompliance,
 } from "@prisma/client";
 import Select from "../ui/select";
-
-interface SidebarProps extends AwaitedPageProps {
-  minMaxValues: Prisma.GetClassifiedAggregateType<{
-    _min: {
-      year: true;
-      price: true;
-      odoReading: true;
-    };
-    _max: {
-      year: true;
-      price: true;
-      odoReading: true;
-    };
-  }>;
-}
 
 const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
   const router = useRouter();
@@ -67,10 +51,12 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
       door: parseAsString.withDefault(""),
       seats: parseAsString.withDefault(""),
       ulezCompliance: parseAsString.withDefault(""),
+      color: parseAsString.withDefault(""),
     },
     { shallow: false }
   );
 
+  // this is used to set FilterCount Top of the sidebar
   useEffect(() => {
     // console.log("Sidebar Search Params");
     const filterCount = Object.entries(
@@ -85,13 +71,14 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
 
   const clearFilters = () => {
     const url = new URL(routes.inventory, process.env.NEXT_PUBLIC_APP_URL);
-    window.location.replace(url.toString());
+    router.replace(url.toString());
   };
 
   const handleChange = async (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    // console.log("Name", name, "Value", value);
 
     setQueryStates({
       [name]: value || null,
@@ -106,7 +93,7 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
   };
 
   return (
-    <div className=" py-4  w-[21.25rem] bg-white  border-r border-muted block">
+    <div className=" hidden lg:block py-4  w-[21.25rem] bg-white  border-r border-muted ">
       <div>
         <div className=" text-lg font-semibold  flex justify-between px-4">
           <span>Filters</span>
@@ -172,10 +159,10 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
         />
         <Select
           label="Currency"
-          name="Currency"
+          name="currency"
           value={queryStates.currency || ""}
           onChange={handleChange}
-          options={Object.values(CurrentCode).map((value) => ({
+          options={Object.values(CurrencyCode).map((value) => ({
             label: value,
             value,
           }))}
@@ -202,17 +189,17 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
         ></Select>
         <Select
           label="Fuel Type"
-          name="fuel type"
+          name="fuelType"
           value={queryStates.fuelType || ""}
           onChange={handleChange}
           options={Object.values(FuelType).map((value) => ({
-            label: formatFualType(value),
+            label: formatFuelType(value),
             value,
           }))}
         ></Select>
         <Select
           label="Body Type"
-          name="body type"
+          name="bodyType"
           value={queryStates.bodyType || ""}
           onChange={handleChange}
           options={Object.values(BodyType).map((value) => ({
@@ -223,7 +210,7 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
         <Select
           label="Color"
           name="color"
-          value={queryStates.bodyType || ""}
+          value={queryStates.color || ""}
           onChange={handleChange}
           options={Object.values(Color).map((value) => ({
             label: formatColor(value),
@@ -232,7 +219,7 @@ const Sidebar = ({ minMaxValues, params, searchParams }: SidebarProps) => {
         ></Select>
         <Select
           label="ULEZ Complaince"
-          name="ulez compliance"
+          name="ulezCompliance"
           value={queryStates.ulezCompliance || ""}
           onChange={handleChange}
           options={Object.values(ULEZCompliance).map((value) => ({

@@ -1,4 +1,5 @@
 import ClassfiedList from "@/components/Inventory/ClassfiedList";
+import DialogFilters from "@/components/Inventory/DialogFilters";
 import Sidebar from "@/components/Inventory/Sidebar";
 import CustomPagination from "@/components/shared/CustomPagination";
 import { CLASSIFIED_PER_PAGE } from "@/config/constants";
@@ -35,6 +36,7 @@ const ClassifiedSchema = z.object({
   door: z.string().optional(),
   seats: z.string().optional(),
   ulezCompliance: z.string().optional(),
+  color: z.string().optional(),
 });
 
 // This Function Creating a prisma query to search spacific Car Details
@@ -57,12 +59,30 @@ const buildClassifiedQuery = (
     maxReading: "odoReading",
   };
 
+  const numFilters = ["seats", "doors"];
+  const enulmFilters = [
+    "odoUnit",
+    "currency",
+    "transmission",
+    "bodyType",
+    "fuelType",
+    "color",
+    "ulezCompliance",
+  ];
+
   const mapParamsToFields = keys.reduce((acc, key) => {
     const value = searchParams?.[key] as string | undefined;
 
     if (!value) return acc;
 
-    if (key in rangefilter) {
+    if (taxonomiefilters.includes(key)) {
+      acc[key] = { id: value };
+    } else if (enulmFilters.includes(key)) {
+      // console.log("Value", value);
+      acc[key] = value.toUpperCase();
+    } else if (numFilters.includes(key)) {
+      acc[key] = Number(value);
+    } else if (key in rangefilter) {
       const field = rangefilter[key as keyof typeof rangefilter];
       acc[field] = acc[field] || {};
       if (key.startsWith("min")) {
@@ -70,10 +90,6 @@ const buildClassifiedQuery = (
       } else if (key.startsWith("max")) {
         acc[field].lte = Number(value);
       }
-    }
-
-    if (taxonomiefilters.includes(key)) {
-      acc[key] = { id: value };
     }
     return acc;
   }, {} as { [key: string]: any });
@@ -152,11 +168,15 @@ const page = async (props: PageProps) => {
             <h2 className=" text-sm md:text-base  lg:text-xl font-semibold min-w-fit">
               We Have Found {count} Classifieds
             </h2>
-            {/* <DialogFilters></DialogFilters> */}
+            <DialogFilters
+              minMaxValues={minMaxResult}
+              count={count}
+              searchParams={searchParams}
+            ></DialogFilters>
           </div>
           <CustomPagination
             styles={{
-              paginationRoot: "hidden xl:flex justify-end",
+              paginationRoot: "hidden  justify-end  lg:flex",
               paginationPrevious: "",
               paginationNext: "",
               paginationLink: "border-none active:border text-black",
@@ -166,11 +186,23 @@ const page = async (props: PageProps) => {
             totalPages={totalPages}
             // maxVisiblePages={5}
           ></CustomPagination>
-          <ClassfiedList
-            classifieds={classifieds}
-            favourites={favourites ? favourites.ids : []}
-          ></ClassfiedList>
         </div>
+        <ClassfiedList
+          classifieds={classifieds}
+          favourites={favourites ? favourites.ids : []}
+        ></ClassfiedList>
+        <CustomPagination
+          styles={{
+            paginationRoot: "justify-center pt-12 lg:hidden",
+            paginationPrevious: "",
+            paginationNext: "",
+            paginationLink: "border-none active:border",
+            paginationLinkActive: "",
+          }}
+          baseURL={routes.inventory}
+          totalPages={totalPages}
+          // maxVisiblePages={5}
+        ></CustomPagination>
       </div>
     </div>
   );

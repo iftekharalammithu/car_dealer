@@ -54,8 +54,8 @@ export function formatTransmission(transmission: Transmission) {
   return transmission === Transmission.AUTOMATIC ? "Automatic" : "Manual";
 }
 
-export function formatFualType(fuenType: FuelType) {
-  switch (fuenType) {
+export function formatFuelType(fuelType: FuelType) {
+  switch (fuelType) {
     case FuelType.DIESEL:
       return "Diesel";
     case FuelType.ELECTRIC:

@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   formatColor,
-  formatFualType,
+  formatFuelType,
   formatNumber,
   formatOdometerUnit,
   formatPrice,
@@ -41,7 +41,7 @@ const getKeyClassifiedInfo = (classified: ClassifiedWithImages) => {
     {
       id: "fuelType",
       icon: <Fuel className=" w-4 h-4"></Fuel>,
-      value: formatFualType(classified.fuelType),
+      value: formatFuelType(classified.fuelType),
     },
     {
       id: "color",
@@ -98,7 +98,7 @@ const Classified_card = ({ classified, favourites }: ClassifiedCardProps) => {
               <p className="text-xs lg:text-base xl:text-lg font-semibold">
                 {formatPrice({
                   price: classified.price,
-                  currency: classified.current,
+                  currency: classified.currency,
                 })}
               </p>
             </div>

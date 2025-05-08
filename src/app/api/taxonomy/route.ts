@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   const params = new URL(req.url).searchParams;
+  // console.log(params);
   // console.log("This is from taxonomy route", params.get("make"));
   try {
     const makes: { id: string; name: string }[] = await prisma.make.findMany({
