@@ -1,7 +1,8 @@
-import React from "react";
+import PublicLayout from "@/components/Inventory/layouts/PublicLayout";
+import React, { PropsWithChildren } from "react";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
-  return <div>{children}</div>;
+const layout = (props: PropsWithChildren) => {
+  return <PublicLayout>{props.children}</PublicLayout>;
 };
 
 export default layout;
