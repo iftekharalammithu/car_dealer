@@ -44,10 +44,10 @@ const socialLink = [
 
 const Footer = () => {
   return (
-    <footer className=" bg-gray-100 px-8 lg:px-0 py-8">
-      <div className=" container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className=" space-y-4">
-          <div className=" flex items-center space-x-2">
+    <footer className=" bg-gray-100  px-8 lg:px-0 py-8">
+      <div className=" container mx-auto  grid grid-cols-1 md:grid-cols-1 gap-8">
+        <div className=" flex  justify-between space-y-4">
+          <div className=" flex  flex-col items-left space-x-2">
             <Link className=" flex items-center" href={routes.home}>
               <Image
                 width={50}
@@ -57,15 +57,15 @@ const Footer = () => {
                 src="/web-app-manifest-512x512.png"
               ></Image>
             </Link>
-          </div>
-          <div className=" flex space-x-4">
-            {socialLink.map((link) => {
-              return (
-                <Link href={link.url} key={link.id}>
-                  {link.icon}
-                </Link>
-              );
-            })}
+            <div className=" flex space-x-4">
+              {socialLink.map((link) => {
+                return (
+                  <Link href={link.url} key={link.id}>
+                    {link.icon}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
           <div className=" space-y-2">
             <ul className=" space-y-1">

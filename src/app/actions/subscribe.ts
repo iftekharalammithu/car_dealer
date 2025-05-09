@@ -22,7 +22,7 @@ export const subscribeAction = async (_: any, formData: FormData) => {
       where: { email: data.email },
     });
     if (subscribe) {
-      return { success: true, message: "You are already subscribed!" };
+      return { success: false, message: "You are already subscribed!" };
     }
 
     await prisma.customer.create({

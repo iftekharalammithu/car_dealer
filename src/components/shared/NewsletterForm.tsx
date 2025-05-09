@@ -6,6 +6,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { CircleCheckIcon, Loader2 } from "lucide-react";
+import { useFormStatus } from "react-dom";
+
+const SubscribeButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <>
+      <Button
+        disabled={pending}
+        className=" w-full uppercase font-bold"
+        type="submit"
+      >
+        {pending && (
+          <Loader2
+            className=" h-4 w-4 shrink-0 animate-spin"
+            aria-hidden="true"
+          ></Loader2>
+        )}{" "}
+        Subscribe Now
+      </Button>
+    </>
+  );
+};
 
 const NewsletterForm = () => {
   const [state, formAction] = useActionState(subscribeAction, {
@@ -95,6 +119,20 @@ const NewsletterForm = () => {
               )}
             ></FormField>
           </div>
+          <SubscribeButton />
+
+          {state.success && (
+            <div className=" flex items-center gap-2 rounded-md bg-green-500 p-3 text-white">
+              <CircleCheckIcon className=" h-5 w-5"></CircleCheckIcon>
+              <span>Success! {state.message}</span>
+            </div>
+          )}
+          {!state.success && state.message && (
+            <div className=" flex items-center gap-2 rounded-md bg-gray-500 p-3 text-white">
+              <CircleCheckIcon className=" h-5 w-5"></CircleCheckIcon>
+              <span>Error! {state.message}</span>
+            </div>
+          )}
         </form>
       </Form>
     </div>
