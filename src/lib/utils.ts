@@ -1,7 +1,8 @@
+import { routes } from "@/config/route";
 import {
   BodyType,
   Color,
-  CurrentCode,
+  CurrencyCode,
   FuelType,
   OdoUnit,
   Transmission,
@@ -16,7 +17,7 @@ export function cn(...inputs: ClassValue[]) {
 
 interface FormatPriceProps {
   price: number | null;
-  currency: CurrentCode | null;
+  currency: CurrencyCode | null;
 }
 
 export function formatPrice({ price, currency }: FormatPriceProps) {
@@ -123,3 +124,16 @@ export function formatBodyType(bodyType: BodyType) {
       return "Unknown";
   }
 }
+
+export const navLinks = [
+  {
+    id: 1,
+    href: routes.home,
+    label: "Home",
+  },
+  {
+    id: 2,
+    href: routes.inventory,
+    label: "Inventory",
+  },
+];

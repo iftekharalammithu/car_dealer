@@ -19,3 +19,15 @@ Their use case is:
 ### => Debounce
 
 It [debounces](src/components/shared/SearchInput.tsx) the search input, which means it will wait for a second before executing the function passed to it. This is useful for preventing too many requests being sent to the server when the user is typing in the search input.
+
+### => useActionState
+
+The [useActionState](src/actions/subscribe.ts) introduction of Server Actions in Next.js 13+ (App Router), the useActionState hook is used to manage the state of a Server Action on the client. It helps you handle:
+
+Form submissions
+
+Loading state
+
+Server responses
+
+Error handling
