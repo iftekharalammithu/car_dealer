@@ -1,6 +1,6 @@
 import NewsletterForm from "@/components/shared/NewsletterForm";
+import { navLinks } from "@/config/constants";
 import { routes } from "@/config/route";
-import { navLinks } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -47,7 +47,7 @@ const Footer = () => {
     <footer className=" bg-gray-100  px-8 lg:px-0 py-8">
       <div className=" container mx-auto  grid grid-cols-1 md:grid-cols-1 gap-8">
         <div className=" flex  justify-between space-y-4">
-          <div className=" flex  flex-col items-left space-x-2">
+          <div className=" flex  space-y-2 flex-col items-left space-x-2">
             <Link className=" flex items-center" href={routes.home}>
               <Image
                 width={50}

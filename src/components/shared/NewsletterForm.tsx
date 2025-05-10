@@ -1,5 +1,5 @@
 "use client";
-import { subscribeAction } from "@/app/actions/subscribe";
+import { subscribeAction } from "@/actions/subscribe";
 import { subscribeSchema } from "@/app/schemas/subscribe";
 import React, { useActionState, useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";

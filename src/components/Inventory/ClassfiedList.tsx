@@ -1,9 +1,9 @@
 import { ClassifiedWithImages } from "@/config/types";
-import React from "react";
+import React, { use } from "react";
 import Classified_card from "./Classified_card";
 
 type classifiedListProps = {
-  classifieds: ClassifiedWithImages[];
+  classifieds: Promise<ClassifiedWithImages[]>;
   favourites: string[];
 };
 
@@ -11,9 +11,10 @@ const ClassfiedList = (props: classifiedListProps) => {
   const { classifieds, favourites } = props;
   // console.log(classifieds);
 
+  const inventory = use(classifieds);
   return (
     <div className=" grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4">
-      {classifieds.map((classified, index) => (
+      {inventory.map((classified, index) => (
         <Classified_card
           key={index}
           classified={classified}

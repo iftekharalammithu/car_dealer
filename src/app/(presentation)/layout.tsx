@@ -1,4 +1,4 @@
-import PublicLayout from "@/components/Inventory/layouts/PublicLayout";
+import PublicLayout from "@/components/layouts/PublicLayout";
 import React, { PropsWithChildren } from "react";
 
 const layout = (props: PropsWithChildren) => {

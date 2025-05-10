@@ -72,7 +72,7 @@ const Classified_card = ({ classified, favourites }: ClassifiedCardProps) => {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 20 }}
           className="bg-white relative  rounded-md shadow-md overflow-hidden flex flex-col"
         >
           <div className="w-full h-64 relative">
@@ -82,7 +82,7 @@ const Classified_card = ({ classified, favourites }: ClassifiedCardProps) => {
                 blurDataURL={classified.images[0].blurhash}
                 src={classified.images[0].src}
                 alt={classified.images[0].alt}
-                className="object-cover w-full h-full"
+                className="object-cover rounded-t-md w-full h-full"
                 loading="lazy"
                 quality={25}
                 width={1920}

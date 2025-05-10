@@ -1,10 +1,14 @@
+import { ClassifiedSchema } from "@/app/schemas/Classified.Schema";
 import { routes } from "@/config/route";
+import { AwaitedPageProps } from "@/config/types";
 import {
   BodyType,
+  ClassifiedStatus,
   Color,
   CurrencyCode,
   FuelType,
   OdoUnit,
+  Prisma,
   Transmission,
   ULEZCompliance,
 } from "@prisma/client";
@@ -125,15 +129,73 @@ export function formatBodyType(bodyType: BodyType) {
   }
 }
 
-export const navLinks = [
-  {
-    id: 1,
-    href: routes.home,
-    label: "Home",
-  },
-  {
-    id: 2,
-    href: routes.inventory,
-    label: "Inventory",
-  },
-];
+// This Function Creating a prisma query to search spacific Car Details
+export const buildClassifiedQuery = (
+  searchParams: AwaitedPageProps["searchParams"] | undefined
+): Prisma.ClassifiedWhereInput => {
+  const { data } = ClassifiedSchema.safeParse(searchParams);
+  if (!data) {
+    return { status: ClassifiedStatus.LIVE };
+  }
+  const keys = Object.keys(data);
+
+  const taxonomiefilters = ["make", "model", "modelVariant"];
+  const rangefilter = {
+    minYear: "year",
+    maxYear: "year",
+    minPrice: "price",
+    maxPrice: "price",
+    minReading: "odoReading",
+    maxReading: "odoReading",
+  };
+
+  const numFilters = ["seats", "doors"];
+  const enulmFilters = [
+    "odoUnit",
+    "currency",
+    "transmission",
+    "bodyType",
+    "fuelType",
+    "color",
+    "ulezCompliance",
+  ];
+
+  const mapParamsToFields = keys.reduce((acc, key) => {
+    const value = searchParams?.[key] as string | undefined;
+
+    if (!value) return acc;
+
+    if (taxonomiefilters.includes(key)) {
+      acc[key] = { id: value };
+    } else if (enulmFilters.includes(key)) {
+      // console.log("Value", value);
+      acc[key] = value.toUpperCase();
+    } else if (numFilters.includes(key)) {
+      acc[key] = Number(value);
+    } else if (key in rangefilter) {
+      const field = rangefilter[key as keyof typeof rangefilter];
+      acc[field] = acc[field] || {};
+      if (key.startsWith("min")) {
+        acc[field].gte = Number(value);
+      } else if (key.startsWith("max")) {
+        acc[field].lte = Number(value);
+      }
+    }
+    return acc;
+  }, {} as { [key: string]: any });
+  return {
+    status: ClassifiedStatus.LIVE,
+    ...(searchParams?.q && {
+      OR: [
+        { title: { contains: searchParams.q as string, mode: "insensitive" } },
+        {
+          description: {
+            contains: searchParams.q as string,
+            mode: "insensitive",
+          },
+        },
+      ],
+    }),
+    ...mapParamsToFields,
+  };
+};

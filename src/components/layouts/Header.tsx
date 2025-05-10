@@ -5,11 +5,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { navLinks } from "@/config/constants";
 import { routes } from "@/config/route";
 import { Favourites } from "@/config/types";
 import { redis } from "@/lib/radis_store";
 import { getSourceId } from "@/lib/source_id";
-import { navLinks } from "@/lib/utils";
 import { HeartIcon, MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
