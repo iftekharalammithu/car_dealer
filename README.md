@@ -24,10 +24,16 @@ It [debounces](src/components/shared/SearchInput.tsx) the search input, which me
 
 The [useActionState](src/actions/subscribe.ts) introduction of Server Actions in Next.js 13+ (App Router), the useActionState hook is used to manage the state of a Server Action on the client. It helps you handle:
 
-Form submissions
+-Form submissions
+-Loading state
+-Server responses
+-Error handling
 
-Loading state
+### => Swiper
 
-Server responses
+[Swiper](src\components\classified\ClassifiedView.tsx) is the most modern free and open source mobile touch slider with hardware accelerated transitions and amazing native behavior. Use it on websites, web apps, and mobile native/hybrid apps.
 
-Error handling
+### => fslightbox-react
+
+[fslightbox-react] (src\components\classified\ClassifiedView.tsx) An easy to use but powerful plug-in for displaying various types of sources—such as images, HTML videos, or YouTube videos—in a clean overlying box. Supports, among others, captions, thumbnails, and zooming.
+Present a single source or create a beautiful gallery with a stylish lightbox without jQuery.

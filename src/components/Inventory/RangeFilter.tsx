@@ -1,5 +1,5 @@
 import { FilterOptions, TaxonomyFilterProps } from "@/config/types";
-import { CurrentCode } from "@prisma/client";
+import { CurrencyCode } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import RangeSelect from "../ui/RangeSelect";
 import { formatNumber, formatPrice } from "@/lib/utils";
@@ -13,7 +13,7 @@ interface RangeFilterProps extends TaxonomyFilterProps {
   increment?: number;
   thousandSeparator?: boolean;
   currency?: {
-    currencyCode: CurrentCode;
+    currencyCode: CurrencyCode;
   };
 }
 
