@@ -73,6 +73,7 @@ const ClassifiedCarousel = ({ images }: ClassifiedCarouselProps) => {
           modules={[EffectFade, Navigation, Thumbs, Virtual]}
           virtual={{ addSlidesAfter: 8, enabled: true }}
           onSlideChange={handleSlideChange}
+          className=" aspect-3/2"
         >
           {images.map((image, index) => (
             <SwiperSlide key={index} virtualIndex={index}>

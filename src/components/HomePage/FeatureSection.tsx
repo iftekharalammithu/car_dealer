@@ -6,7 +6,7 @@ const FeatureSection = () => {
       <div className=" mx-auto max-w-7xl px-6 lg:px-8">
         <div className=" mx-auto max-w-8xl sm:text-center ">
           <h2 className=" text-base md:text-2xl font-semibold leading-7">
-            we have got what you need
+            We have got what you need
           </h2>
           <h2 className=" mt-2 uppercase text-4xl font-bold tracking-tight text-gray-900 sm:text-8xl">
             No car? No Problem

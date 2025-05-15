@@ -1,19 +1,17 @@
+import { validateIdSchema } from "@/app/schemas/is.schema";
 import { routes } from "@/config/route";
 import { Favourites } from "@/config/types";
 import { redis } from "@/lib/radis_store";
 import { setSourceId } from "@/lib/source_id";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import z from "zod";
 
 export const POST = async (res: NextRequest) => {
   const body = await res.json();
   // console.log("api called");
   // console.log(body);
 
-  const { data, error } = z
-    .object({ classifiedId: z.string() })
-    .safeParse(body);
+  const { data, error } = validateIdSchema.safeParse(body);
 
   if (!data) {
     return NextResponse.json({ error: error.message });

@@ -21,7 +21,7 @@ export type ClassifiedWithImages = Prisma.ClassifiedGetPayload<{
 export enum MultiStapFormEnum {
   WELCOME = 1,
   SELECT_DATE = 2,
-  SELECT_DETAILS = 3,
+  SUBMIT_DETAILS = 3,
 }
 
 export interface Favourites {
@@ -47,4 +47,8 @@ export interface SidebarProps extends AwaitedPageProps {
       odoReading: true;
     };
   }>;
+}
+
+export interface MultiStepFormComponentProps extends AwaitedPageProps {
+  classified: Prisma.ClassifiedGetPayload<{ include: { make: true } }>;
 }
