@@ -21,6 +21,7 @@ const Favourite_button = (props: Favouritebutton) => {
     const { ids } = await api.post<{ ids: string[] }>(endpoints.favourites, {
       json: { classifiedId },
     });
+    // console.log(ids);
 
     if (ids.includes(classifiedId)) {
       setIsFavourite(true);

@@ -1,4 +1,4 @@
-import { validateIdSchema } from "@/app/schemas/is.schema";
+import { validateIdSchema } from "@/app/schemas/id.schema";
 import { routes } from "@/config/route";
 import { Favourites } from "@/config/types";
 import { redis } from "@/lib/radis_store";
@@ -9,9 +9,9 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (res: NextRequest) => {
   const body = await res.json();
   // console.log("api called");
-  // console.log(body);
 
   const { data, error } = validateIdSchema.safeParse(body);
+  // console.log(data);
 
   if (!data) {
     return NextResponse.json({ error: error.message });
