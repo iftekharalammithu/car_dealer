@@ -6,8 +6,9 @@ import {
   PrismaClientKnownRequestError,
   PrismaClientValidationError,
 } from "@prisma/client/runtime/library";
+import { PrevState } from "@/config/types";
 
-export const subscribeAction = async (_: any, formData: FormData) => {
+export const subscribeAction = async (_: PrevState, formData: FormData) => {
   try {
     const { data, success, error } = subscribeSchema.safeParse({
       firstName: formData.get("firstName") as string,

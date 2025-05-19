@@ -12,6 +12,8 @@ export const config = {
   adapter: PrismaAdapter(prisma),
   useSecureCookies: false,
   trustHost: true,
+  secret: process.env.NEXTAUTH_SECRET, // Add this line
+
   session: {
     strategy: "database",
     maxAge: SESSION_MAX_AGE / 1000,
@@ -36,8 +38,9 @@ export const config = {
           }
           const user = await prisma.user.findUnique({
             where: { email: validatedField.data.email },
-            select: { hashedpassword: true },
+            select: { id: true, email: true, hashedpassword: true },
           });
+
           if (!user) {
             return null;
           }
@@ -45,9 +48,12 @@ export const config = {
             validatedField.data.password,
             user.hashedpassword
           );
+          // console.log(match);
           if (!match) {
             return null;
           }
+          // console.log(user);
+
           return {
             ...user,
             requires2FA: true,
@@ -69,7 +75,7 @@ export const config = {
     async jwt({ user, token }) {
       const session = await prisma.session.create({
         data: {
-          expires: new Date(Date.now() * SESSION_MAX_AGE),
+          expires: new Date(Date.now() + SESSION_MAX_AGE),
           sessionToken: crypto.randomUUID(),
           userId: user.id as string,
           requires2FA: user.requires2FA as boolean,
