@@ -1,26 +1,20 @@
 // app/not-found.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function NotFound() {
   const router = useRouter();
-  const [countdown, setCountdown] = useState(3);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push("/");
     }, 3500);
 
-    const interval = setInterval(() => {
-      setCountdown((prev) => prev - 1);
-    }, 1000);
-
     return () => {
       clearTimeout(timer);
-      clearInterval(interval);
     };
   }, [router]);
 
@@ -116,8 +110,8 @@ export default function NotFound() {
           </div>
         </div>
         <p className="text-gray-600 mb-4">
-          Redirecting to home page in{" "}
-          <span className="font-bold">{countdown}</span> seconds...
+          Redirecting to home page in <span className="font-bold">3</span>{" "}
+          seconds...
         </p>
         <Link
           href="/"

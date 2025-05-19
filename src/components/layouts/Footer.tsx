@@ -79,6 +79,14 @@ const Footer = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  className=" flex items-center gap-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 "
+                  href={routes.signIn}
+                >
+                  Admin
+                </Link>
+              </li>
             </ul>
           </div>
           <NewsletterForm></NewsletterForm>
