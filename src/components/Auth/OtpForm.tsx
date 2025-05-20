@@ -1,0 +1,96 @@
+"use client";
+import { OneTimePasswordSchema, OtpSchematype } from "@/app/schemas/Otp.Schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState, useTransition } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "../ui/form";
+import { OneTimePasswordInput } from "./OtpInput";
+import { Loader2, RotateCw } from "lucide-react";
+import { resendChallangeAction } from "@/actions/Challange";
+import { toast } from "sonner";
+
+const OtpForm = () => {
+  const [isCodePending, startCodeTransition] = useTransition();
+  const [isSubmitPending, startSubmitTransition] = useTransition();
+  const router = useRouter();
+  const form = useForm<OtpSchematype>({
+    resolver: zodResolver(OneTimePasswordSchema),
+  });
+
+  const onSubmit: SubmitHandler<OtpSchematype> = (data) => {};
+
+  const [sendButtonText, setSendButtonText] = useState("Send Code");
+  const sendCode = () => {
+    startCodeTransition(async () => {
+      const { success, message } = await resendChallangeAction();
+      setSendButtonText("Resend Code");
+
+      if (!success) {
+        toast.error("Error", { description: message });
+      }
+      toast.success("Code Sent", { description: "Otp Send to Your Email" });
+    });
+  };
+
+  useEffect(() => {
+    if (isCodePending) {
+      setSendButtonText("Sending....");
+    }
+  }, [isCodePending]);
+
+  return (
+    <div className=" min-h-[calc(100vh-4rem)]  flex w-full flex-1  justify-center pt-10 px-6 lg:items-center lg:pt-0">
+      <div className="flex w-full max-w-lg flex-col">
+        <h3 className=" mb-4 text-4xl lg:text-5xl text-center">
+          One Time Password
+        </h3>
+        <p className=" mb-12 text-center text-slate-500">
+          Enter the six Digit code sent to your Email
+        </p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}></form>
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field: { value, onChange, ...rest } }) => (
+              <FormItem className=" mb-8">
+                <FormControl>
+                  <OneTimePasswordInput
+                    type="number"
+                    setValue={onChange}
+                    {...rest}
+                  ></OneTimePasswordInput>
+                </FormControl>
+                <FormMessage></FormMessage>
+              </FormItem>
+            )}
+          ></FormField>
+        </Form>
+        <div className="flex w-full  items-center justify-center">
+          <button
+            type="button"
+            className=" flex items-center gap-2.5 text-base font-medium text-slate-500 transition-colors cursor-pointer duration-200 hover:text-primary group"
+            onClick={sendCode}
+            disabled={isCodePending}
+          >
+            {isCodePending ? (
+              <Loader2 className=" w-6 h-6 text-gray-500 transition-colors duration-200 group-hover:text-primary animate-spin"></Loader2>
+            ) : (
+              <RotateCw className=" w-6 h-6 text-gray-500 transition-colors duration-200 group-hover:text-primary "></RotateCw>
+            )}
+            {sendButtonText}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OtpForm;
