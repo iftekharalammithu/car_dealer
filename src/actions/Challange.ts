@@ -1,6 +1,6 @@
 "use server";
 
-import { issueChallange } from "@/lib/otp";
+import { completeChallenge, issueChallange } from "@/lib/otp";
 import { auth } from "@auth";
 
 export const resendChallangeAction = async () => {
@@ -17,4 +17,18 @@ export const resendChallangeAction = async () => {
     success: true,
     message: "Code Sent",
   };
+};
+
+export const completeChallangeAction = async (code: string) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    return {
+      success: false,
+      message: "Unauthorized",
+    };
+  }
+  const { id } = session.user;
+  const result = await completeChallenge(id as string, code);
+  return result;
 };

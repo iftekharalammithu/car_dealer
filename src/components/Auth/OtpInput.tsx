@@ -62,16 +62,23 @@ export const OneTimePasswordInput = forwardRef<HTMLInputElement, PinCodeProps>(
 
     function handleChange(e: ChangeEvent<HTMLInputElement>, index: number) {
       const inputValue = e.target.value.split("");
+
       inputRefs.current[index].value = inputValue[inputValue.length - 1];
       if (index < length - 1) {
         inputRefs.current[index + 1].focus();
       }
       setPinValue();
+      const isComplete =
+        inputRefs.current.map((node) => node.value).join("").length >= 6;
+      if (isComplete) {
+        const form = e.currentTarget.closest("form");
+        form?.requestSubmit();
+      }
     }
 
     function handlePaste(e: ClipboardEvent<HTMLInputElement>, index: number) {
       const copiedValue = e.clipboardData.getData("text").trim().split("");
-      console.log(copiedValue);
+      // console.log(copiedValue);
       const isComplete = copiedValue.length >= length;
       for (let i = 0; i < length - index; i += 1) {
         inputRefs.current[index + i].value = copiedValue[i] ?? "";
@@ -83,7 +90,7 @@ export const OneTimePasswordInput = forwardRef<HTMLInputElement, PinCodeProps>(
       }
       e.preventDefault();
       setPinValue();
-      if (!isComplete) {
+      if (isComplete) {
         const form = e.currentTarget.closest("form");
         form?.requestSubmit();
       }

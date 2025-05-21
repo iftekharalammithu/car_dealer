@@ -7,6 +7,8 @@ import { bcryptPasswordCompare } from "@/lib/bcrypt";
 import { SESSION_MAX_AGE } from "@/config/constants";
 import { SignSchema } from "@/app/schemas/Signin.Schema";
 import { routes } from "@/config/route";
+import { issueChallange } from "@/lib/otp";
+import { AdapterUser } from "next-auth/adapters";
 
 export const config = {
   adapter: PrismaAdapter(prisma),
@@ -53,6 +55,7 @@ export const config = {
             return null;
           }
           // console.log(user);
+          await issueChallange(user.id, user.email);
 
           return {
             ...user,
@@ -91,13 +94,9 @@ export const config = {
       token.exp = session.expires.getTime();
       return token;
     },
-    async session({ session, user }) {
-      const newSession = {
-        user,
-        requires2FA: session.requires2FA,
-        expires: session.expires,
-      };
-      return newSession;
+    async session({ session }) {
+      session.user = {} as AdapterUser;
+      return session;
     },
   },
   jwt: {

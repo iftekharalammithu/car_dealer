@@ -13,7 +13,10 @@ import {
 } from "../ui/form";
 import { OneTimePasswordInput } from "./OtpInput";
 import { Loader2, RotateCw } from "lucide-react";
-import { resendChallangeAction } from "@/actions/Challange";
+import {
+  completeChallangeAction,
+  resendChallangeAction,
+} from "@/actions/Challange";
 import { toast } from "sonner";
 
 const OtpForm = () => {
@@ -24,7 +27,17 @@ const OtpForm = () => {
     resolver: zodResolver(OneTimePasswordSchema),
   });
 
-  const onSubmit: SubmitHandler<OtpSchematype> = (data) => {};
+  const onSubmit: SubmitHandler<OtpSchematype> = (data) => {
+    startSubmitTransition(async () => {
+      console.log(data.code);
+      const result = await completeChallangeAction(data.code);
+      // console.log(result);
+      if (!result?.success) {
+        toast.error("Error", { description: result.message });
+      } else {
+      }
+    });
+  };
 
   const [sendButtonText, setSendButtonText] = useState("Send Code");
   const sendCode = () => {
@@ -55,39 +68,40 @@ const OtpForm = () => {
           Enter the six Digit code sent to your Email
         </p>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}></form>
-          <FormField
-            control={form.control}
-            name="code"
-            render={({ field: { value, onChange, ...rest } }) => (
-              <FormItem className=" mb-8">
-                <FormControl>
-                  <OneTimePasswordInput
-                    type="number"
-                    setValue={onChange}
-                    {...rest}
-                  ></OneTimePasswordInput>
-                </FormControl>
-                <FormMessage></FormMessage>
-              </FormItem>
-            )}
-          ></FormField>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="code"
+              render={({ field: { value, onChange, ...rest } }) => (
+                <FormItem className=" mb-8">
+                  <FormControl>
+                    <OneTimePasswordInput
+                      type="number"
+                      setValue={onChange}
+                      {...rest}
+                    ></OneTimePasswordInput>
+                  </FormControl>
+                  <FormMessage></FormMessage>
+                </FormItem>
+              )}
+            ></FormField>
+            <div className="flex w-full  items-center justify-center">
+              <button
+                type="button"
+                className=" flex items-center gap-2.5 text-base font-medium text-slate-500 transition-colors cursor-pointer duration-200 hover:text-primary group"
+                onClick={sendCode}
+                disabled={isCodePending}
+              >
+                {isCodePending ? (
+                  <Loader2 className=" w-6 h-6 text-gray-500 transition-colors duration-200 group-hover:text-primary animate-spin"></Loader2>
+                ) : (
+                  <RotateCw className=" w-6 h-6 text-gray-500 transition-colors duration-200 group-hover:text-primary "></RotateCw>
+                )}
+                {sendButtonText}
+              </button>
+            </div>
+          </form>
         </Form>
-        <div className="flex w-full  items-center justify-center">
-          <button
-            type="button"
-            className=" flex items-center gap-2.5 text-base font-medium text-slate-500 transition-colors cursor-pointer duration-200 hover:text-primary group"
-            onClick={sendCode}
-            disabled={isCodePending}
-          >
-            {isCodePending ? (
-              <Loader2 className=" w-6 h-6 text-gray-500 transition-colors duration-200 group-hover:text-primary animate-spin"></Loader2>
-            ) : (
-              <RotateCw className=" w-6 h-6 text-gray-500 transition-colors duration-200 group-hover:text-primary "></RotateCw>
-            )}
-            {sendButtonText}
-          </button>
-        </div>
       </div>
     </div>
   );

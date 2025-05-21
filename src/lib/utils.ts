@@ -159,29 +159,32 @@ export const buildClassifiedQuery = (
     "ulezCompliance",
   ];
 
-  const mapParamsToFields = keys.reduce((acc, key) => {
-    const value = searchParams?.[key] as string | undefined;
+  const mapParamsToFields = keys.reduce(
+    (acc, key) => {
+      const value = searchParams?.[key] as string | undefined;
 
-    if (!value) return acc;
+      if (!value) return acc;
 
-    if (taxonomiefilters.includes(key)) {
-      acc[key] = { id: value };
-    } else if (enulmFilters.includes(key)) {
-      // console.log("Value", value);
-      acc[key] = value.toUpperCase();
-    } else if (numFilters.includes(key)) {
-      acc[key] = Number(value);
-    } else if (key in rangefilter) {
-      const field = rangefilter[key as keyof typeof rangefilter];
-      acc[field] = acc[field] || {};
-      if (key.startsWith("min")) {
-        acc[field].gte = Number(value);
-      } else if (key.startsWith("max")) {
-        acc[field].lte = Number(value);
+      if (taxonomiefilters.includes(key)) {
+        acc[key] = { id: value };
+      } else if (enulmFilters.includes(key)) {
+        // console.log("Value", value);
+        acc[key] = value.toUpperCase();
+      } else if (numFilters.includes(key)) {
+        acc[key] = Number(value);
+      } else if (key in rangefilter) {
+        const field = rangefilter[key as keyof typeof rangefilter];
+        acc[field] = acc[field] || {};
+        if (key.startsWith("min")) {
+          acc[field].gte = Number(value);
+        } else if (key.startsWith("max")) {
+          acc[field].lte = Number(value);
+        }
       }
-    }
-    return acc;
-  }, {} as { [key: string]: any });
+      return acc;
+    },
+    {} as { [key: string]: any }
+  );
   return {
     status: ClassifiedStatus.LIVE,
     ...(searchParams?.q && {

@@ -40,9 +40,9 @@ const SignInForm = () => {
 
   useEffect(() => {
     if (state.success && formRef.current) {
-      console.log(state);
       router.refresh();
       router.push(routes.challenge);
+      console.log(state);
     }
   }, [state, router]);
   return (
