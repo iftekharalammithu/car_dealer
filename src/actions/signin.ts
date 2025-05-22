@@ -2,7 +2,7 @@
 
 import { SignSchema } from "@/app/schemas/Signin.Schema";
 import { PrevState } from "@/config/types";
-import { signIn } from "@auth";
+import { signIn } from "@/auth";
 
 export const signInAction = async (_: PrevState, formData: FormData) => {
   try {

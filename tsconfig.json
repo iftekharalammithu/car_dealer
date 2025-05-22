@@ -22,7 +22,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/env": ["./env.mjs"],
-      "@auth": ["./auth"]
+      "@/auth": ["./auth"]
     }
   },
   "include": [

@@ -29,12 +29,13 @@ const OtpForm = () => {
 
   const onSubmit: SubmitHandler<OtpSchematype> = (data) => {
     startSubmitTransition(async () => {
-      console.log(data.code);
+      // console.log(data.code);
       const result = await completeChallangeAction(data.code);
       // console.log(result);
       if (!result?.success) {
         toast.error("Error", { description: result.message });
       } else {
+        toast.success("Verified", { description: "OTP Verified" });
       }
     });
   };

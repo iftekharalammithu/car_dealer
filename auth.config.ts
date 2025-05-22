@@ -94,8 +94,9 @@ export const config = {
       token.exp = session.expires.getTime();
       return token;
     },
-    async session({ session }) {
-      session.user = {} as AdapterUser;
+    async session({ session, user }) {
+      // console.log(session);
+      session.user = { id: session.userId, email: user.email } as AdapterUser;
       return session;
     },
   },

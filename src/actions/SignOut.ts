@@ -1,6 +1,6 @@
 "use server";
 import { routes } from "@/config/route";
-import { auth, signOut } from "@auth";
+import { auth, signOut } from "@/auth";
 
 export const SignOutAction = async () => {
   const session = await auth();

@@ -1,7 +1,7 @@
 "use server";
 
 import { completeChallenge, issueChallange } from "@/lib/otp";
-import { auth } from "@auth";
+import { auth } from "@/auth";
 
 export const resendChallangeAction = async () => {
   const session = await auth();
@@ -21,6 +21,7 @@ export const resendChallangeAction = async () => {
 
 export const completeChallangeAction = async (code: string) => {
   const session = await auth();
+  // console.log("sess", session);
 
   if (!session?.user) {
     return {

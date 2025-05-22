@@ -10,7 +10,7 @@ import { routes } from "@/config/route";
 import { Favourites } from "@/config/types";
 import { redis } from "@/lib/radis_store";
 import { getSourceId } from "@/lib/source_id";
-import { auth } from "@auth";
+import { auth } from "@/auth";
 import { HeartIcon, MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
