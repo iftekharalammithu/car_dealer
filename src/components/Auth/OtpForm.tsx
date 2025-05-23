@@ -18,6 +18,8 @@ import {
   resendChallangeAction,
 } from "@/actions/Challange";
 import { toast } from "sonner";
+import { routes } from "@/config/route";
+import { Button } from "../ui/button";
 
 const OtpForm = () => {
   const [isCodePending, startCodeTransition] = useTransition();
@@ -36,6 +38,7 @@ const OtpForm = () => {
         toast.error("Error", { description: result.message });
       } else {
         toast.success("Verified", { description: "OTP Verified" });
+        router.push(routes.admin.dashboard);
       }
     });
   };
@@ -73,7 +76,7 @@ const OtpForm = () => {
             <FormField
               control={form.control}
               name="code"
-              render={({ field: { value, onChange, ...rest } }) => (
+              render={({ field: { onChange, ...rest } }) => (
                 <FormItem className=" mb-8">
                   <FormControl>
                     <OneTimePasswordInput
@@ -100,6 +103,19 @@ const OtpForm = () => {
                 )}
                 {sendButtonText}
               </button>
+            </div>
+            <div className="mt-6 flex w-full flex-col gap-4 md:mt-16">
+              <Button
+                className=" flex w-full gap-x-2"
+                disabled={isSubmitPending}
+              >
+                <span className=" text-sm uppercase tracking-wider  text-inherit">
+                  {isSubmitPending ? "Verifying..." : "Verify"}
+                </span>
+                {isSubmitPending ? (
+                  <Loader2 className=" w-4 h-4 shrink-0 animate-spin"></Loader2>
+                ) : null}
+              </Button>
             </div>
           </form>
         </Form>

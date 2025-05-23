@@ -14,12 +14,11 @@ export async function issueChallange(userId: string, email: string) {
   const hash = await bcryptPasswordhashed(code.toString());
   const challange = { codeHash: hash, email };
 
-  await redis.setex(`${REDIS_PREFIX}:uid-${userId}`, 60 * 60, challange);
+  await redis.setex(`${REDIS_PREFIX}:uid-${userId}`, 10 * 60, challange);
   const { error } = await resend.emails.send({
     from: env.FROM_EMAIL_ADDRESS,
     to: email,
     subject: `Sign in to Car Dealer OTP`,
-    html: `<p>${code} </p>`,
     react: Challange({ data: { code } }),
   });
   if (error) {
