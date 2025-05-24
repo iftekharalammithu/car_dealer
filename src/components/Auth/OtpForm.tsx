@@ -48,11 +48,15 @@ const OtpForm = () => {
     startCodeTransition(async () => {
       const { success, message } = await resendChallangeAction();
       setSendButtonText("Resend Code");
+      // console.log(success, message);
 
       if (!success) {
         toast.error("Error", { description: message });
+      } else {
+        toast.success("Code Sent", {
+          description: "Otp Send to Your Email",
+        });
       }
-      toast.success("Code Sent", { description: "Otp Send to Your Email" });
     });
   };
 
