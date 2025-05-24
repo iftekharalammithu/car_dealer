@@ -3,10 +3,15 @@
 import { SignSchema } from "@/app/schemas/Signin.Schema";
 import { PrevState } from "@/config/types";
 import { signIn } from "@/auth";
+import { genericRatelimiter } from "@/lib/ratelimites";
 
 export const signInAction = async (_: PrevState, formData: FormData) => {
   try {
     // console.log("Form Data", formData);
+    const limiterError = await genericRatelimiter("login");
+    if (limiterError) {
+      return limiterError;
+    }
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 

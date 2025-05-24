@@ -1,5 +1,7 @@
+import { PrevState } from "@/config/types";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { differenceInMinutes } from "date-fns";
 import { headers } from "next/headers";
 
 const ratelimiteLogin = new Ratelimit({
@@ -18,9 +20,27 @@ async function generateRateLimiter(type: "otp" | "login") {
   return type === "otp" ? ratelimiteOtp.limit(ip) : ratelimiteLogin.limit(ip);
 }
 
-export async function genericRatelimiter(type: "otp" | "login") {
+export async function genericRatelimiter(
+  type: "otp" | "login"
+): Promise<PrevState | undefined> {
   const { success, reset } = await generateRateLimiter(type);
-  const resetTime = new Date();
+  const resetTime = new Date(reset);
   const now = new Date();
-  const differents = Math.round(resetTime.getTime() - now.getTime() / 1000);
+  const differentsinSeconds = Math.round(
+    resetTime.getTime() - now.getTime() / 1000
+  );
+
+  if (!success) {
+    if (differentsinSeconds > 60) {
+      const resetTimeInMinutes = differenceInMinutes(resetTime, now);
+      return {
+        success: false,
+        message: `Too many attempts.Try again in  ${resetTimeInMinutes} Minute`,
+      };
+    }
+    return {
+      success: false,
+      message: `Too many attempts.Try again in  ${differentsinSeconds} Minute`,
+    };
+  }
 }
