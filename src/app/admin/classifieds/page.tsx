@@ -1,7 +1,9 @@
+import AdminClassifiedsHeader from "@/components/Admin/Classified/AdminClassifiedsHeader";
+
 const page = () => {
   return (
     <div>
-      <h1>sdfsdf</h1>
+      <AdminClassifiedsHeader></AdminClassifiedsHeader>
     </div>
   );
 };
