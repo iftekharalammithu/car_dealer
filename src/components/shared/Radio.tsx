@@ -17,6 +17,7 @@ const Radio = (props: RadioProps) => {
   const status = (searchParams?.status as string) || "all";
 
   const handleStatus = (status: Lowercase<ClassifiedStatus>) => {
+    // console.log(status);
     const currentUrlParams = new URLSearchParams(window.location.search);
     currentUrlParams.set("status", status.toUpperCase());
     const url = new URL(window.location.href);

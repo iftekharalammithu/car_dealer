@@ -2,6 +2,7 @@ import Radio from "@/components/shared/Radio";
 import { AwaitedPageProps } from "@/config/types";
 import { ClassifiedStatus } from "@prisma/client";
 import React from "react";
+import CreateClassifiedDialog from "./CreateClassifiedDialog";
 
 const AdminClassifiedsHeader = ({ searchParams }: AwaitedPageProps) => {
   // console.log(ClassifiedStatus);
@@ -14,6 +15,7 @@ const AdminClassifiedsHeader = ({ searchParams }: AwaitedPageProps) => {
             items={["All", ...Object.values(ClassifiedStatus)]}
             searchParams={searchParams}
           ></Radio>
+          <CreateClassifiedDialog></CreateClassifiedDialog>
         </div>
       </div>
     </div>
