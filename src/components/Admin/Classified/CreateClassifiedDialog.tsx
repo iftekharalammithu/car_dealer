@@ -21,6 +21,9 @@ import { z } from "zod";
 import { ClassifieddAiSchema } from "@/app/schemas/Classified-Schema-ai";
 import { createClassifiedAction } from "@/actions/Classified";
 import { toast } from "sonner";
+import { Form } from "@/components/ui/form";
+import { Loader2 } from "lucide-react";
+import ImageUploader from "./ImageUploader";
 
 export default function CreateClassifiedDialog() {
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -94,6 +97,34 @@ export default function CreateClassifiedDialog() {
           <DialogTitle>Create New Classified</DialogTitle>
         </DialogHeader>
         {/* <StreambleSkeleton></StreambleSkeleton> */}
+        <Form {...imageForm}>
+          <form
+            className=" space-y-4"
+            onSubmit={imageForm.handleSubmit(onImageSubmit)}
+          >
+            <ImageUploader onUploadComplete={handleImageUpload}></ImageUploader>
+            <div className=" flex justify-between gap-2">
+              <Button
+                variant={"outline"}
+                type="button"
+                onClick={() => setIsModelOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className=" flex items-center gap-x-2"
+                onClick={() => setIsModelOpen(false)}
+                disabled={isUpLoading}
+              >
+                {isUpLoading && (
+                  <Loader2 className=" animate-spin h-4 w-4"></Loader2>
+                )}
+                Upload
+              </Button>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

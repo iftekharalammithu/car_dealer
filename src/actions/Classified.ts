@@ -1,3 +1,4 @@
+"use server";
 import { auth } from "@/auth";
 import { StreambleSkeletonProps } from "@/components/Admin/Classified/StreambleSkeleton";
 import { routes } from "@/config/route";
