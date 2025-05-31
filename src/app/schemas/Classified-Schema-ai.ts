@@ -26,8 +26,8 @@ export const ClassifiedDetailsSchema = z.object({
     ),
   vrm: z.string().describe(" Vehicle Registration Mark (VRM) of the vehicle"),
   odoReading: z.number().describe(" Odometer reading of the vehicle"),
-  doors: z.string().describe(" Number of doors of the vehicle"),
-  seats: z.string().describe(" Number of seats of the vehicle"),
+  doors: z.number().describe(" Number of doors of the vehicle"),
+  seats: z.number().describe(" Number of seats of the vehicle"),
   ulezCompliance: z
     .nativeEnum(ULEZCompliance)
     .describe(" ULEZ Compliance of the vehicle"),
@@ -43,8 +43,8 @@ export const ClassifiedDetailsSchema = z.object({
 export const ClassifieddAiSchema = ClassifiedDetailsSchema.merge(
   ClassifiedTaxonomyAISchema
 ).extend({
-  title: z.string().describe("Title of the Vahicle"),
-  image: z.string().describe("Image URL of the Vahicle"),
+  title: z.string().describe("Title of the Vehicle").optional(),
+  image: z.string().describe("Image URL of the Vehicle").optional(),
 });
 
 export type ClassifiedAi = z.infer<typeof ClassifieddAiSchema>;

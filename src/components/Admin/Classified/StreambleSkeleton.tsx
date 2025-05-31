@@ -9,11 +9,21 @@ import {
   formatUlezCompliance,
 } from "@/lib/utils";
 import { Make } from "@prisma/client";
-import { CheckIcon, Fingerprint, XIcon } from "lucide-react";
+import {
+  CarFrontIcon,
+  CarIcon,
+  CheckIcon,
+  Fingerprint,
+  FuelIcon,
+  GaugeIcon,
+  PowerIcon,
+  UsersIcon,
+  XIcon,
+} from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-type StreambleSkeletonProps = Partial<Omit<ClassifiedAi, "make">> & {
+export type StreambleSkeletonProps = Partial<Omit<ClassifiedAi, "make">> & {
   make?: Make;
   done?: boolean;
 };
@@ -37,7 +47,7 @@ const StreambleSkeleton = (props: StreambleSkeletonProps) => {
     color,
   } = props;
   return (
-    <div className=" flex flex-col container mx-auto py-12">
+    <div className="  flex flex-col container mx-auto py-12">
       <div className="flex flex-col md:flex-row">
         <div className=" md:w-1/2 relative">
           {image ? (
@@ -111,9 +121,9 @@ const StreambleSkeleton = (props: StreambleSkeletonProps) => {
           <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <div className=" bg-gray-100 rounded-lg shadow-xs p-4 text-center">
               {ulezCompliance === "EXEMPT" ? (
-                <CheckIcon className=" w-6 h-6 mx-auto text-gray-500"></CheckIcon>
+                <CheckIcon className=" w-6 h-6 mx-auto text-zinc-600 "></CheckIcon>
               ) : (
-                <XIcon className=" w-6 h-6 mx-auto text-red-500"></XIcon>
+                <XIcon className=" w-6 h-6 mx-auto text-zinc-600 "></XIcon>
               )}
               {ulezCompliance ? (
                 <p className=" text-sm font-medium mt-2">
@@ -126,7 +136,7 @@ const StreambleSkeleton = (props: StreambleSkeletonProps) => {
               )}
             </div>
             <div className=" bg-gray-100 rounded-lg shadow-xs p-4 text-center">
-              <Fingerprint className=" w-6 h-6 mx-auto "></Fingerprint>
+              <Fingerprint className=" w-6 h-6 mx-auto text-zinc-600 "></Fingerprint>
               {vrm ? (
                 <p className=" text-sm font-medium mt-2">{vrm}</p>
               ) : !done ? (
@@ -136,13 +146,69 @@ const StreambleSkeleton = (props: StreambleSkeletonProps) => {
               )}
             </div>
             <div className=" bg-gray-100 rounded-lg shadow-xs p-4 text-center">
-              <Fingerprint className=" w-6 h-6 mx-auto "></Fingerprint>
+              <CarIcon className=" w-6 h-6 mx-auto text-zinc-600 "></CarIcon>
               {bodyType ? (
                 <p className=" text-sm font-medium mt-2">{bodyType}</p>
               ) : !done ? (
                 <Skeleton className=" gap-4 w-16 mx-auto mt-2"></Skeleton>
               ) : (
                 <p className=" text-sm font-medium mt-2">UNKNOWN</p>
+              )}
+            </div>
+            <div className=" bg-gray-100 rounded-lg shadow-xs p-4 text-center">
+              <FuelIcon className=" w-6 h-6 mx-auto text-zinc-600 "></FuelIcon>
+              {fuelType ? (
+                <p className=" text-sm  font-medium mt-2">
+                  {formatFuelType(fuelType)}
+                </p>
+              ) : !done ? (
+                <Skeleton className=" gap-4 w-16 mx-auto mt-2"></Skeleton>
+              ) : (
+                <p className=" text-sm  font-medium mt-2">UNKNOWN</p>
+              )}
+            </div>
+            <div className=" bg-gray-100 rounded-lg shadow-xs p-4 text-center">
+              <PowerIcon className=" w-6 h-6 mx-auto text-zinc-600 "></PowerIcon>
+              {transmission ? (
+                <p className=" text-sm  font-medium mt-2">
+                  {formatTransmission(transmission)}
+                </p>
+              ) : !done ? (
+                <Skeleton className=" gap-4 w-16 mx-auto mt-2"></Skeleton>
+              ) : (
+                <p className=" text-sm  font-medium mt-2">UNKNOWN</p>
+              )}
+            </div>
+            <div className=" bg-gray-100 rounded-lg shadow-xs p-4 text-center">
+              <GaugeIcon className=" w-6 h-6 mx-auto text-zinc-600 "></GaugeIcon>
+              {odoReading && odoUnit ? (
+                <p className=" text-sm  font-medium mt-2">
+                  {formatNumber(odoReading)} {formatOdometerUnit(odoUnit)}
+                </p>
+              ) : !done ? (
+                <Skeleton className=" gap-4 w-16 mx-auto mt-2"></Skeleton>
+              ) : (
+                <p className=" text-sm  font-medium mt-2">UNKNOWN</p>
+              )}
+            </div>
+            <div className=" bg-gray-100 rounded-lg shadow-xs p-4 text-center">
+              <UsersIcon className=" w-6 h-6 mx-auto text-zinc-600 "></UsersIcon>
+              {seats ? (
+                <p className=" text-sm  font-medium mt-2">{seats}</p>
+              ) : !done ? (
+                <Skeleton className=" gap-4 w-16 mx-auto mt-2"></Skeleton>
+              ) : (
+                <p className=" text-sm  font-medium mt-2">UNKNOWN</p>
+              )}
+            </div>
+            <div className=" bg-gray-100 rounded-lg shadow-xs p-4 text-center">
+              <CarFrontIcon className=" w-6 h-6 mx-auto text-zinc-600 "></CarFrontIcon>
+              {doors ? (
+                <p className=" text-sm  font-medium mt-2">{doors}</p>
+              ) : !done ? (
+                <Skeleton className=" gap-4 w-16 mx-auto mt-2"></Skeleton>
+              ) : (
+                <p className=" text-sm  font-medium mt-2">UNKNOWN</p>
               )}
             </div>
           </div>

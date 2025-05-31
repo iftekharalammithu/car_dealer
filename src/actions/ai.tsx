@@ -9,15 +9,17 @@ import { UserContent } from "ai";
 import { ReactNode } from "react";
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
-import StreambleSkeleton from "@/components/Admin/Classified/StreambleSkeleton";
+import StreambleSkeleton, {
+  StreambleSkeletonProps,
+} from "@/components/Admin/Classified/StreambleSkeleton";
 
-const { text } = await generateText({
-  model: google("gemini-1.5-flash"),
-  prompt: "Write a vegetarian lasagna recipe for 4 people.",
-});
-console.log(text);
+// const { text } = await generateText({
+//   model: google("gemini-1.5-flash"),
+//   prompt: "Write a vegetarian lasagna recipe for 4 people.",
+// });
+// console.log(text);
 
-export async function generateClassifieds(
+async function generateClassifieds(
   image: string
 ): Promise<ClientMessage | null> {
   const uiStream = createStreamableUI();
@@ -36,14 +38,14 @@ type ServerMessage = {
 };
 
 export type ClientMessage = {
-  id?: number;
+  id: number;
   display: ReactNode;
   role: "user" | "assistant";
-  classified: StreamableValue<any>;
+  classified: StreamableValue<StreambleSkeletonProps>;
 };
 
 export const Ai = createAI({
-  initialUIState: [] as ServerMessage[],
-  initialAIState: [],
+  initialUIState: [] as ClientMessage[],
+  initialAIState: [] as ServerMessage[],
   actions: { generateClassifieds },
 });
