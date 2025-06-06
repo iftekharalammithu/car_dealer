@@ -1,10 +1,10 @@
 "use server";
+import { CurrencyCode } from "@prisma/client";
 import { auth } from "@/auth";
 import { StreambleSkeletonProps } from "@/components/Admin/Classified/StreambleSkeleton";
 import { routes } from "@/config/route";
 import prisma from "@/lib/prismadb";
 import { generateThumbHashFromSrcUrl } from "@/lib/thumb-hash-server";
-import { CurrencyCode } from "@prisma/client";
 import { randomInt } from "crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -62,8 +62,8 @@ export const createClassifiedAction = async (data: StreambleSkeletonProps) => {
         }),
         vrm: data?.vrm ? data.vrm : null,
         price: 0,
-        currency: CurrencyCode.GBP,
         odoReading: data.odoReading,
+        currency: CurrencyCode.GBP,
         odoUnit: data.odoUnit,
         fuelType: data.fuelType,
         bodyType: data.bodyType,

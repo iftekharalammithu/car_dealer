@@ -65,7 +65,7 @@
     "tsconfig-paths": "^4.2.0",
     "unlazy": "^0.12.4",
     "uuid": "^11.1.0",
-    "zod": "^3.24.4",
+    "zod": "^3.25.53",
     "zod-form-data": "^3.0.0"
   },
   "devDependencies": {
