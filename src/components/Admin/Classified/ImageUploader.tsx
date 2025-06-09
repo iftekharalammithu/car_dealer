@@ -3,6 +3,8 @@ import { MAX_IMAGE_SIZE } from "@/config/constants";
 import { endpoints } from "@/config/endpoints";
 import { api } from "@/lib/api-client";
 import { cn, convertToMb } from "@/lib/utils";
+import { ImagePlus, Loader2 } from "lucide-react";
+import Image from "next/image";
 import React, { ChangeEvent, DragEvent, useRef, useState } from "react";
 
 interface ImageUploaderProps {
@@ -10,7 +12,7 @@ interface ImageUploaderProps {
 }
 
 const ImageUploader = (props: ImageUploaderProps) => {
-  const { oonUploadComplete } = props;
+  const { onUploadComplete } = props;
   const [preview, setPreview] = useState<string | null>(null);
   const [isUpload, setisUpload] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
@@ -50,8 +52,9 @@ const ImageUploader = (props: ImageUploaderProps) => {
           body: formData,
         }
       );
+      console.log("Response from Upload", response);
       const { url } = response;
-      oonUploadComplete(url);
+      onUploadComplete(url);
       setUploadComplete(true);
     } catch (error) {
       console.log("Error Uploading File", error);
@@ -94,7 +97,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
         }
       );
       const { url } = response;
-      oonUploadComplete(url);
+      onUploadComplete(url);
       setUploadComplete(true);
     } catch (error) {
       console.log("Error Uploading File", error);
@@ -149,8 +152,31 @@ const ImageUploader = (props: ImageUploaderProps) => {
           accept="image/*"
           onChange={handleUpload}
           className="hidden"
-          disabled
+          disabled={isUpload}
+          multiple={false}
         ></input>
+        {preview ? (
+          <Image
+            width={500}
+            height={500}
+            src={preview}
+            alt="Preview"
+            className=" h-full w-full object-cover rounded-md"
+          ></Image>
+        ) : (
+          <div className=" text-center flex items-center justify-center flex-col">
+            <ImagePlus className=" mx-auto w-12 h-12 text-gray-400"></ImagePlus>
+            <p className=" mt-1 text-sm text-gray-600">
+              Click or Drag to upload image (max 2mb)
+            </p>
+          </div>
+        )}
+        {isUpload && (
+          <div className=" absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75">
+            <Loader2 className=" w-8 h-8 animate-spin text-gray-500"></Loader2>
+          </div>
+        )}
+        {error && <p className=" mt-2 text-sm text-red-500">{error}</p>}
       </div>
     </div>
   );

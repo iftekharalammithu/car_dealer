@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { Form } from "@/components/ui/form";
 import { Loader2 } from "lucide-react";
 import ImageUploader from "./ImageUploader";
+import StreambleSkeleton from "./StreambleSkeleton";
 
 export default function CreateClassifiedDialog() {
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function CreateClassifiedDialog() {
   const [isCreating, startCreateTransition] = useTransition();
 
   const { generateClassifieds } = useActions<typeof Ai>();
-  const { messages, setMessage } = useState<typeof Ai>();
+  const [messages, setMessage] = useState<typeof Ai>();
 
   const imageForm = useForm<SingleImageType>({
     resolver: zodResolver(SingleImageSchema),
@@ -96,35 +97,73 @@ export default function CreateClassifiedDialog() {
         <DialogHeader>
           <DialogTitle>Create New Classified</DialogTitle>
         </DialogHeader>
-        {/* <StreambleSkeleton></StreambleSkeleton> */}
-        <Form {...imageForm}>
-          <form
-            className=" space-y-4"
-            onSubmit={imageForm.handleSubmit(onImageSubmit)}
-          >
-            <ImageUploader onUploadComplete={handleImageUpload}></ImageUploader>
-            <div className=" flex justify-between gap-2">
-              <Button
-                variant={"outline"}
-                type="button"
-                onClick={() => setIsModelOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className=" flex items-center gap-x-2"
-                onClick={() => setIsModelOpen(false)}
-                disabled={isUpLoading}
-              >
-                {isUpLoading && (
-                  <Loader2 className=" animate-spin h-4 w-4"></Loader2>
-                )}
-                Upload
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <StreambleSkeleton></StreambleSkeleton>
+        {messages?.length ? (
+          <Form {...createForm}>
+            <form
+              className=" space-y-4"
+              onSubmit={createForm.handleSubmit(onCreateSubmit)}
+            >
+              {messages.map((message) => {
+                return (
+                  <div className=" w-full" key={message.id}>
+                    {message.display}
+                  </div>
+                );
+              })}
+              <div className="flex justify-between gap-2">
+                <Button
+                  variant={"outline"}
+                  type="button"
+                  onClick={() => setIsModelOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className=" flex items-center gap-x-2"
+                  disabled={isCreating || isUpLoading}
+                >
+                  {isCreating ||
+                    (isUpLoading ? (
+                      <Loader2 className=" animate-spin h-4 w-4"></Loader2>
+                    ) : null)}
+                  {isUpLoading ? "Uploading..." : "Create"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        ) : (
+          <Form {...imageForm}>
+            <form
+              className=" space-y-4"
+              onSubmit={imageForm.handleSubmit(onImageSubmit)}
+            >
+              <ImageUploader
+                onUploadComplete={handleImageUpload}
+              ></ImageUploader>
+              <div className=" flex justify-between gap-2">
+                <Button
+                  variant={"outline"}
+                  type="button"
+                  onClick={() => setIsModelOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className=" flex items-center gap-x-2"
+                  disabled={isUpLoading}
+                >
+                  {isUpLoading && (
+                    <Loader2 className=" animate-spin h-4 w-4"></Loader2>
+                  )}
+                  Upload
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
       </DialogContent>
     </Dialog>
   );
