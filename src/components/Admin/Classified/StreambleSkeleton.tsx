@@ -85,28 +85,28 @@ const StreambleSkeleton = (props: StreambleSkeletonProps) => {
           </div>
           <div className=" my-4 flex flex-wrap items-center gap-2">
             {odoReading && odoUnit ? (
-              <span className=" bg-gray-200 text-gray-800 text-sm font-medium px-2 py-5 rounded-md">
+              <span className=" bg-gray-200 text-gray-800 text-sm font-medium px-2 py-2 rounded-md">
                 {formatNumber(odoReading)} {formatOdometerUnit(odoUnit)}
               </span>
             ) : !done ? (
               <Skeleton className=" h-6 w-16 rounded-md "></Skeleton>
             ) : null}
             {fuelType ? (
-              <span className=" bg-gray-200 text-gray-800 text-sm font-medium px-2 py-5 rounded-md">
+              <span className=" bg-gray-200 text-gray-800 text-sm font-medium px-2 py-2 rounded-md">
                 {formatFuelType(fuelType)}
               </span>
             ) : !done ? (
               <Skeleton className=" h-6 w-16 rounded-md "></Skeleton>
             ) : null}
             {color ? (
-              <span className=" bg-gray-200 text-gray-800 text-sm font-medium px-2 py-5 rounded-md">
+              <span className=" bg-gray-200 text-gray-800 text-sm font-medium px-2 py-2 rounded-md">
                 {formatColor(color)}
               </span>
             ) : !done ? (
               <Skeleton className=" h-6 w-16 rounded-md "></Skeleton>
             ) : null}
             {transmission ? (
-              <span className=" bg-gray-200 text-gray-800 text-sm font-medium px-2 py-5 rounded-md">
+              <span className=" bg-gray-200 text-gray-800 text-sm font-medium px-2 py-2 rounded-md">
                 {formatTransmission(transmission)}
               </span>
             ) : !done ? (

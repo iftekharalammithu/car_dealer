@@ -11,8 +11,12 @@ import { google } from "@ai-sdk/google";
 import StreambleSkeleton, {
   StreambleSkeletonProps,
 } from "@/components/Admin/Classified/StreambleSkeleton";
-import { ClassifiedTaxonomyAISchema } from "@/app/schemas/Classified-Schema-ai";
+import {
+  ClassifiedDetailsSchema,
+  ClassifiedTaxonomyAISchema,
+} from "@/app/schemas/Classified-Schema-ai";
 import { mapTaxonomyToCreate } from "@/lib/ai-utils";
+import prisma from "@/lib/prismadb";
 
 // const { text } = await generateText({
 //   model: google("gemini-1.5-flash"),
@@ -50,6 +54,8 @@ export async function generateClassifieds(
     classified.title =
       `${taxonomy.year} ${taxonomy.make} ${taxonomy.model} ${taxonomy.modelVariant ? `${taxonomy.modelVariant}` : ""}`.trim();
 
+    // console.log(classified.title);
+
     const foundtaxonomy = await mapTaxonomyToCreate({
       year: taxonomy.year,
       make: taxonomy.make,
@@ -69,7 +75,33 @@ export async function generateClassifieds(
         };
       }
     }
+    // console.log(classified);
+
+    uiStream.update(<StreambleSkeleton {...classified} />);
+    const { object: details } = await generateObject({
+      model: google("gemini-1.5-flash"),
+      schema: ClassifiedDetailsSchema,
+      system:
+        "You are an expert at writing vehicle description and generate the structured data . the description should be accurate and atleast 50 words long. ",
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: `Based on the image provided. Your tasked with determining the odometer reading(random), doors, seats, ULEZ compliance, transmission type, color, fuel type, body type, and odometer unit , drive type , VRM and any addition details in the schema provided for the ${classified.title}. you must be accurate when determining the values for these properties even if the image is not clear . `,
+            },
+            { type: "image", image },
+          ],
+        },
+      ] as CoreMessage[],
+    });
+
+    classified = { ...classified, ...details };
     uiStream.update(<StreambleSkeleton done={true} {...classified} />);
+    console.log(classified);
+    // console.log("Details", details);
+
     value.update(classified);
     uiStream.done();
     value.done();

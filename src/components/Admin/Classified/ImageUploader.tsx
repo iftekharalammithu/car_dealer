@@ -42,18 +42,19 @@ const ImageUploader = (props: ImageUploaderProps) => {
     reader.readAsDataURL(file);
 
     try {
-      const formData = new FormData();
+      // const formData = new FormData();
 
-      formData.append("file", file);
+      // formData.append("file", file);
 
-      const response = await api.post<{ url: string }>(
-        endpoints.images.singleUpload,
-        {
-          body: formData,
-        }
-      );
-      console.log("Response from Upload", response);
-      const { url } = response;
+      // const response = await api.post<{ url: string }>(
+      //   endpoints.images.singleUpload,
+      //   {
+      //     body: formData,
+      //   }
+      // );
+      // console.log("Response from Upload", response);
+      const url =
+        "https://i.pinimg.com/736x/4d/ea/16/4dea1604f697d47c0b652d95b30defd1.jpg";
       onUploadComplete(url);
       setUploadComplete(true);
     } catch (error) {

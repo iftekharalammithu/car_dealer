@@ -27,7 +27,7 @@ interface SalesChartProps {
 const SalesChart = (props: SalesChartProps) => {
   const { data } = props;
   const chardata = use(data);
-  console.log("Char Data", data);
+  // console.log("Char Data", data);
   return (
     <Card className=" mb-6 bg-gray-800 border-gray-700">
       <CardHeader>

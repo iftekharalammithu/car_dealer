@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useState, useTransition } from "react";
-import { readStreamableValue, useActions } from "ai/rsc";
+import { readStreamableValue, useActions, useUIState } from "ai/rsc";
 import { Ai } from "@/actions/ai";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +32,7 @@ export default function CreateClassifiedDialog() {
   const [isCreating, startCreateTransition] = useTransition();
 
   const { generateClassifieds } = useActions<typeof Ai>();
-  const [messages, setMessage] = useState<typeof Ai>();
+  const [messages, setMessage] = useUIState<typeof Ai>();
 
   const imageForm = useForm<SingleImageType>({
     resolver: zodResolver(SingleImageSchema),
@@ -58,6 +58,7 @@ export default function CreateClassifiedDialog() {
     imageForm.setValue("image", url);
   };
   const onImageSubmit: SubmitHandler<SingleImageType> = (data) => {
+    // console.log(data);
     startUpLoadTransition(async () => {
       const responseMessage = await generateClassifieds(data.image);
       if (!responseMessage) {
@@ -75,19 +76,21 @@ export default function CreateClassifiedDialog() {
   };
 
   const onCreateSubmit: SubmitHandler<StreambleSkeletonProps> = (data) => {
+    // console.log(data);
     startCreateTransition(async () => {
       setMessage([]);
-      const { success, message } = await createClassifiedAction(data);
+      const { success, message, error } = await createClassifiedAction(data);
       if (!success) {
+        // console.log(error);
         toast.error("Error", {
-          description: message,
+          description: error,
         });
         return;
       }
     });
   };
   return (
-    <Dialog open={true} onOpenChange={() => null}>
+    <Dialog open={true} onOpenChange={setIsModelOpen}>
       <DialogTrigger asChild>
         <Button className=" ml-4" size={"sm"}>
           Create New
@@ -97,7 +100,7 @@ export default function CreateClassifiedDialog() {
         <DialogHeader>
           <DialogTitle>Create New Classified</DialogTitle>
         </DialogHeader>
-        <StreambleSkeleton></StreambleSkeleton>
+        {/* <StreambleSkeleton></StreambleSkeleton> */}
         {messages?.length ? (
           <Form {...createForm}>
             <form

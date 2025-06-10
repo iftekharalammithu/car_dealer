@@ -13,6 +13,9 @@ import { createPngDataUri } from "unlazy/thumbhash";
 
 export const createClassifiedAction = async (data: StreambleSkeletonProps) => {
   const session = await auth();
+  // console.log(session);
+  // console.log("Creating Classified with data:", data);
+
   if (!session) {
     return { success: false, error: "Unauthorized" };
   }

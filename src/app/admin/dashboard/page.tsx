@@ -141,7 +141,7 @@ const getDashboardData = async () => {
     newCustomerThisMonth,
     newCustomerLastMonth
   );
-  console.log(newCustomerThisMonth, newCustomerLastMonth);
+  // console.log(newCustomerThisMonth, newCustomerLastMonth);
 
   const PurchasedSoldPercentageChange = calculatePercentageChange(
     purchsedCustomerThisMonth,
