@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 
 function setRequestHeaders(requestHeaders: Headers) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+
   const cspHeader = `
   default-src 'self';
   script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
@@ -64,4 +65,5 @@ export default auth((req) => {
 export const config = {
   matcher:
     "/((?!api/auth|_next/static|_next/image|favicon.ico|manifest.json|logo.svg).*)",
+  runtime: "nodejs",
 };
