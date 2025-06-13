@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import slugify from "slugify";
 import { createPngDataUri } from "unlazy/thumbhash";
+import { updateClassifiedType } from "@/app/schemas/Classified.Schema";
 
 export const createClassifiedAction = async (data: StreambleSkeletonProps) => {
   const session = await auth();
@@ -99,5 +100,105 @@ export const createClassifiedAction = async (data: StreambleSkeletonProps) => {
     redirect(routes.admin.editclassified(classifiedId));
   } else {
     return { success: false, message: "Failed to create Classified" };
+  }
+};
+
+export const updateClassifiedAction = async (data: updateClassifiedType) => {
+  const session = await auth();
+  if (!session) {
+    return { success: false, error: "Unauthorized" };
+  }
+  let success = false;
+  try {
+    const makeId = data.make;
+    const modelId = data.model;
+    const modelVariantId = data.modelVariant ? data.modelVariant : null;
+
+    const model = await prisma.model.findUnique({
+      where: { id: data.model as string },
+    });
+
+    const make = await prisma.make.findUnique({
+      where: { id: data.make as string },
+    });
+
+    let title = `${data.year} ${make?.name} ${model?.name}`;
+
+    if (modelVariantId) {
+      const modelvariant = await prisma.modelVariant.findUnique({
+        where: { id: modelVariantId },
+      });
+      if (modelvariant) {
+        title = `${title} ${modelvariant.name}`;
+      }
+    }
+    let slug = slugify(`${title} ${data.vrm}`);
+
+    const { classified, images } = await prisma.$transaction(
+      async (prisma) => {
+        await prisma.image.deleteMany({
+          where: { classifiedId: data.id },
+        });
+        const imagesData = await Promise.all(
+          data.images.map(async ({ src }, index) => {
+            const hash = await generateThumbHashFromSrcUrl(data.images[0].src);
+            const uri = createPngDataUri(hash);
+            return {
+              classifiedId: data.id,
+              isMain: !index,
+              blurhash: uri,
+              src,
+              alt: `${title} ${index + 1}`,
+            };
+          })
+        );
+        const images = await prisma.image.createManyAndReturn({
+          data: imagesData,
+        });
+        const classified = await prisma.classified.update({
+          where: { id: data.id },
+          data: {
+            slug,
+            title,
+            year: Number(data.year),
+            makeId,
+            modelId,
+            ...(modelVariantId && { modelVariantId }),
+            vrm: data.vrm,
+            price: data.price,
+            currency: data.currency,
+            odoReading: data.odoReading,
+            odoUnit: data.odoUnit,
+            fuelType: data.fuelType,
+            bodyType: data.bodyType,
+            transmission: data.transmission,
+            ulezCompliance: data.ulezCompliance,
+            color: data.color,
+            description: data.description,
+            doors: data.doors,
+            seats: data.seats,
+            status: data.status,
+            images: { set: images.map((image) => ({ id: image.id })) },
+          },
+        });
+        return [classified, images];
+      },
+      { timeout: 10000 }
+    );
+    if (classified && images) {
+      success = true;
+    }
+  } catch (error) {
+    console.log(error);
+    if (error instanceof Error) {
+      return { success: false, message: error.message };
+    }
+    return { success: false, message: "Something went wrong" };
+  }
+  if (success) {
+    revalidatePath(routes.admin.classifieds);
+    redirect(routes.admin.classifieds);
+  } else {
+    return { success: false, message: "Failed to update Classified" };
   }
 };

@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (res: NextRequest) => {
   const body = await res.json();
   // console.log("api called");
-
+  // console.log(body);
   const { data, error } = validateIdSchema.safeParse(body);
   // console.log(data);
 

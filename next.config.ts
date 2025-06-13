@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
         source: "/(.*)",
         headers: [
           {
-            key: "Strick-Transport-Security",
+            key: "strict-Transport-Security",
             value: "max-age=63072000; includeSubDomains; preload",
           },
           {
@@ -44,10 +44,10 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Permissions-Policy",
-            value: `camera=(), microphone=(), geolocation=() , midi=() , sync-xhr=() , fullscreen=(self "${process.env.NEXT_PUBLIC_APP_URL}") , geolocation=("${process.env.NEXT_PUBLIC_APP_URL}")`,
+            value: `camera=(), microphone=(),  midi=() , sync-xhr=() , fullscreen=(self "${process.env.NEXT_PUBLIC_APP_URL}") , geolocation=("${process.env.NEXT_PUBLIC_APP_URL}")`,
           },
           {
-            key: "Refferer-Policy",
+            key: "Referrer-Policy",
             value: "strict-origin-when-cross-origin",
           },
         ],
