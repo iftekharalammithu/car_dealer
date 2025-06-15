@@ -265,3 +265,12 @@ export const convertToMb = (bytes: number) => {
     space: false,
   });
 };
+
+export function generateYears(minYear: number, maxYear?: number): string[] {
+  const currentYear = maxYear ? maxYear : new Date().getFullYear();
+  const years: string[] = [];
+  for (let year = currentYear; year >= minYear; year--) {
+    years.push(year.toString());
+  }
+  return years;
+}

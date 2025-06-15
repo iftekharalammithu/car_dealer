@@ -1,3 +1,4 @@
+"use client";
 import {
   updateClassifiedSchema,
   updateClassifiedType,
@@ -10,6 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Form } from "../ui/form";
 import { updateClassifiedAction } from "@/actions/Classified";
+import Classifiedformfields from "./Classified_form_fields";
 
 interface ClassifiedFormProps {
   classified: ClassifiedWithImages;
@@ -36,7 +38,14 @@ const Classified_Form = ({ classified }: ClassifiedFormProps) => {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(classifiedSubmit)}></form>
+        <form onSubmit={form.handleSubmit(classifiedSubmit)}>
+          <h1 className=" text-3xl font-bold mb-4 text-muted ">
+            Upload Vehicle
+          </h1>
+          <div className="w-full mx-auto grid grid-cols-2 gap-6">
+            <Classifiedformfields></Classifiedformfields>
+          </div>
+        </form>
       </Form>
     </div>
   );

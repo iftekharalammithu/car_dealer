@@ -23,7 +23,6 @@ const EditClassified = async (props: PageProps) => {
   console.log(classified);
   return (
     <div>
-      <h1>{data.id}</h1>
       <Classified_Form classified={classified}></Classified_Form>
     </div>
   );
