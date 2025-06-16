@@ -13,6 +13,7 @@ export const GET = async (req: NextRequest) => {
         name: "asc",
       },
     });
+
     let models: Model[] = [];
 
     if (params.get("make")) {

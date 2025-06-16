@@ -12,9 +12,19 @@ import { toast } from "sonner";
 import { Form } from "../ui/form";
 import { updateClassifiedAction } from "@/actions/Classified";
 import Classifiedformfields from "./Classified_form_fields";
+import { CurrencyCode, OdoUnit } from "@prisma/client";
 
 interface ClassifiedFormProps {
   classified: ClassifiedWithImages;
+}
+
+function extracKey(url: string) {
+  const nextUrl = new URL(url);
+  nextUrl.href = url;
+
+  const regex = /uploads\/.+/;
+  const match = url.match(regex);
+  return match ? match[0] : url;
 }
 
 const Classified_Form = ({ classified }: ClassifiedFormProps) => {
@@ -22,7 +32,38 @@ const Classified_Form = ({ classified }: ClassifiedFormProps) => {
 
   const form = useForm<updateClassifiedType>({
     resolver: zodResolver(updateClassifiedSchema),
-    defaultValues: {},
+    defaultValues: {
+      id: classified.id,
+      odoUnit: OdoUnit.MILES,
+      currency: CurrencyCode.GBP,
+      ...(classified && {
+        images: classified.images
+          ? classified.images.map((image) => ({
+              ...image,
+              id: image.id,
+              percentage: 100,
+              key: extracKey(image.src),
+              done: true,
+            }))
+          : [],
+        make: classified.makeId,
+        model: classified.modelId,
+        modelVariant: classified.modelVariantId,
+        year: classified.year.toString(),
+        vrm: classified.vrm ?? "",
+        description: classified.description ?? "",
+        fuelType: classified.fuelType,
+        bodyType: classified.bodyType,
+        transmission: classified.transmission,
+        color: classified.color,
+        ulezCompliance: classified.ulezCompliance,
+        status: classified.status,
+        odoReading: classified.odoReading,
+        seats: classified.seats,
+        doors: classified.doors,
+        price: classified.price / 100,
+      }),
+    },
   });
 
   const classifiedSubmit: SubmitHandler<updateClassifiedType> = (data) => {
