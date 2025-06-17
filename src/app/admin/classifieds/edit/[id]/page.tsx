@@ -20,7 +20,7 @@ const EditClassified = async (props: PageProps) => {
   });
 
   if (!classified) redirect(routes.admin.classifieds);
-  console.log(classified);
+  // console.log(classified);
   return (
     <div>
       <Classified_Form classified={classified}></Classified_Form>

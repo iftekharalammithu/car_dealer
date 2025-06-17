@@ -24,6 +24,7 @@ function extracKey(url: string) {
 
   const regex = /uploads\/.+/;
   const match = url.match(regex);
+
   return match ? match[0] : url;
 }
 

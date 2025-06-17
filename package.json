@@ -24,7 +24,7 @@
     "@radix-ui/react-slot": "^1.2.2",
     "@react-email/components": "^0.0.41",
     "@t3-oss/env-nextjs": "^0.13.0",
-    "@tinymce/tinymce-react": "^6.1.0",
+    "@tinymce/tinymce-react": "^6.2.1",
     "@types/mime-types": "^3.0.0",
     "@types/sanitize-html": "^2.15.0",
     "@upstash/ratelimit": "^2.0.5",
