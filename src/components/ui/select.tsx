@@ -8,7 +8,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
   selectClassName?: string;
-  onDefault?: boolean;
+  noDefault?: boolean;
 }
 
 const Select = (props: SelectProps) => {
@@ -19,7 +19,7 @@ const Select = (props: SelectProps) => {
     onChange,
     className,
     selectClassName,
-    onDefault = true,
+    noDefault = true,
     ...rest
   } = props;
   // console.log("call", value);
@@ -36,7 +36,7 @@ const Select = (props: SelectProps) => {
           )}
           {...rest}
         >
-          {onDefault && <option value="">Select</option>}
+          {noDefault && <option value="">Select</option>}
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}

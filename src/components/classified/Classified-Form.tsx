@@ -9,10 +9,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Form } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { updateClassifiedAction } from "@/actions/Classified";
 import Classifiedformfields from "./Classified_form_fields";
-import { CurrencyCode, OdoUnit } from "@prisma/client";
+import { ClassifiedStatus, CurrencyCode, OdoUnit } from "@prisma/client";
+import Select from "../ui/select";
+import { Image_Count } from "@/config/constants";
+import { formatClassifiedStatus } from "@/lib/utils";
 
 interface ClassifiedFormProps {
   classified: ClassifiedWithImages;
@@ -84,8 +87,48 @@ const Classified_Form = ({ classified }: ClassifiedFormProps) => {
           <h1 className=" text-3xl font-bold mb-4 text-muted ">
             Upload Vehicle
           </h1>
-          <div className="w-full mx-auto grid grid-cols-2 gap-6">
+          <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Classifiedformfields></Classifiedformfields>
+            <div className="space-y-6">
+              <FormField
+                control={form.control}
+                name="images"
+                render={({ field: { ref, ...rest } }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="images">
+                      Image (Up to {Image_Count})
+                    </FormLabel>
+                    <FormControl>
+                      {/* <MultiImageUpload></MultiImageUpload> */}
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field: { ref, ...rest } }) => (
+                  <FormItem>
+                    <FormLabel className=" text-muted" htmlFor="status">
+                      Status
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        options={Object.values(ClassifiedStatus).map(
+                          (value) => ({
+                            label: formatClassifiedStatus(value),
+                            value,
+                          })
+                        )}
+                        noDefault={false}
+                        selectClassName=" bg-primary border-transparent text-muted/75"
+                        {...rest}
+                      ></Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
+            </div>
           </div>
         </form>
       </Form>

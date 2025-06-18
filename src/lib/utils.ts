@@ -274,3 +274,14 @@ export function generateYears(minYear: number, maxYear?: number): string[] {
   }
   return years;
 }
+
+export function formatClassifiedStatus(status: ClassifiedStatus) {
+  switch (status) {
+    case ClassifiedStatus.LIVE:
+      return "Live";
+    case ClassifiedStatus.SOLD:
+      return "Sold";
+    case ClassifiedStatus.DRAFT:
+      return "Draft";
+  }
+}
