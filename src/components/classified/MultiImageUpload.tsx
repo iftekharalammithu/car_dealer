@@ -1,6 +1,10 @@
 import { updateClassifiedType } from "@/app/schemas/Classified.Schema";
+import { generateThumbHashFromSrcUrl } from "@/lib/thumb-hash-server";
+import { generateThumbHashFromFile } from "@/lib/ThumbHash";
 import React, { useCallback, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
+import { createPngDataUri } from "unlazy/thumbhash";
+import { v4 } from "uuid";
 import { z } from "zod";
 
 interface MultiImageUpload extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -35,6 +39,42 @@ const MultiImageUpload = (props: MultiImageUpload) => {
       newProgress[index] = { ...newProgress[index], ...updates };
       return newProgress;
     });
+  }, []);
+
+  const handleItemsUpdate = useCallback(
+    (newItems: ClassifiedImages) => {
+      replace(newItems);
+      setItems(newItems);
+    },
+    [replace]
+  );
+
+  const setFiles = useCallback(async (validFiels: File[]) => {
+    const files = Object.values(validFiels);
+    setIsuploading(files.length > 0);
+
+    let id = items.length + 1;
+    const newImageData: ClassifiedImages = [];
+
+    for (const file of files) {
+      const uuid = v4();
+      const hash = await generateThumbHashFromFile(file);
+      const base64 = createPngDataUri(hash);
+
+      const data = {
+        id: id.toString(),
+        uuid,
+        percentage: 0,
+        alt: file.name,
+        key: "",
+        src: "",
+        base64,
+        done: false,
+      };
+      newImageData.push(data);
+      id++;
+      const options = { file, uuid };
+    }
   }, []);
 
   return <div></div>;

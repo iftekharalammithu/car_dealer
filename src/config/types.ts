@@ -56,3 +56,11 @@ export type PrevState = {
   success: boolean;
   message: string;
 };
+
+export interface ProgressArgs {
+  sent: number;
+  total: number;
+  uuid: string;
+  percentage: number;
+  key?: string;
+}

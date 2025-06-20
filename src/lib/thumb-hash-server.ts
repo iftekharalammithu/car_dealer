@@ -18,5 +18,6 @@ export async function generateThumbHashFromSrcUrl(
     .ensureAlpha()
     .toBuffer({ resolveWithObject: true });
   const thumbhash = rgbaToThumbHash(info.width, info.height, data);
+
   return Buffer.from(thumbhash).toString("base64");
 }
