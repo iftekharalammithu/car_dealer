@@ -1,5 +1,6 @@
 import { endpoints } from "@/config/endpoints";
 import { api } from "./api-client";
+import { ProgressArgs } from "@/config/types";
 
 interface UploaderOptions {
   file: File;
@@ -109,6 +110,7 @@ export class Uploader {
 
   sendNext() {
     const activeConnections = Object.keys(this.activeConnections).length;
+
     if (activeConnections >= this.threadsQuantity) {
       return;
     }

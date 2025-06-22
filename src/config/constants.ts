@@ -17,4 +17,4 @@ export const navLinks = [
 
 export const SESSION_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 export const MAX_IMAGE_SIZE = 20 * 1000 * 1000;
-export const Image_Count = 20;
+export const Max_Image = 20;

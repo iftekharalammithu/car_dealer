@@ -90,7 +90,7 @@ export default function CreateClassifiedDialog() {
     });
   };
   return (
-    <Dialog open={true} onOpenChange={setIsModelOpen}>
+    <Dialog open={isModelOpen} onOpenChange={setIsModelOpen}>
       <DialogTrigger asChild>
         <Button className=" ml-4" size={"sm"}>
           Create New

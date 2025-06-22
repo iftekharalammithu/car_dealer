@@ -1,10 +1,7 @@
 import { InitialiseMultiparUploadSchema } from "@/app/schemas/Images.Schema";
 import { auth } from "@/auth";
 import { s3 } from "@/lib/s3";
-import {
-  CreateMultipartUploadCommand,
-  CreateMultipartUploadCommandInput,
-} from "@aws-sdk/client-s3";
+import { CreateMultipartUploadCommandInput } from "@aws-sdk/client-s3";
 import { forbidden } from "next/navigation";
 import { NextResponse } from "next/server";
 
@@ -32,6 +29,7 @@ export const POST = auth(async (req) => {
       Key: key.replace(/\s*/g, "-"),
       ...(mime && { ContentType: mime }),
     };
+    const { CreateMultipartUploadCommand } = await import("@aws-sdk/client-s3");
 
     const command = new CreateMultipartUploadCommand(multipartParam);
     const multipartUpload = await s3.send(command);

@@ -14,8 +14,9 @@ import { updateClassifiedAction } from "@/actions/Classified";
 import Classifiedformfields from "./Classified_form_fields";
 import { ClassifiedStatus, CurrencyCode, OdoUnit } from "@prisma/client";
 import Select from "../ui/select";
-import { Image_Count } from "@/config/constants";
+import { Max_Image } from "@/config/constants";
 import { formatClassifiedStatus } from "@/lib/utils";
+import MultiImageUpload from "./MultiImageUpload";
 
 interface ClassifiedFormProps {
   classified: ClassifiedWithImages;
@@ -93,13 +94,16 @@ const Classified_Form = ({ classified }: ClassifiedFormProps) => {
               <FormField
                 control={form.control}
                 name="images"
-                render={({ field: { ref, ...rest } }) => (
+                render={({ field: { name, onChange } }) => (
                   <FormItem>
-                    <FormLabel htmlFor="images">
-                      Image (Up to {Image_Count})
+                    <FormLabel className=" text-muted" htmlFor="images">
+                      Image (Up to {Max_Image})
                     </FormLabel>
                     <FormControl>
-                      {/* <MultiImageUpload></MultiImageUpload> */}
+                      <MultiImageUpload
+                        name={name}
+                        onChange={onChange}
+                      ></MultiImageUpload>
                     </FormControl>
                   </FormItem>
                 )}
