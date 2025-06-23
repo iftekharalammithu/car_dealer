@@ -8,6 +8,7 @@ import React, { useCallback, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { createPngDataUri } from "unlazy/thumbhash";
 import { v4 } from "uuid";
+import DragAndDrop from "./DragAndDrop";
 
 interface MultiImageUpload extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
@@ -117,8 +118,13 @@ const MultiImageUpload = (props: MultiImageUpload) => {
   };
 
   return (
-    <div className={cn(className, "space-y-3")}>
-      {/* <DragAndDrop></DragAndDrop> */}
+    <div className={cn(className, "space-y-3 mt-1")}>
+      <DragAndDrop
+        isUploading={isUploading}
+        setIsUploading={setIsuploading}
+        items={items}
+        setFile={setFiles}
+      ></DragAndDrop>
       <div className="relative overflow-hidden rounded-lg">
         {/* <DragAndDropContext></DragAndDropContext> */}
       </div>
