@@ -9,6 +9,22 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { createPngDataUri } from "unlazy/thumbhash";
 import { v4 } from "uuid";
 import DragAndDrop from "./DragAndDrop";
+import dynamic from "next/dynamic";
+import { Skeleton } from "../ui/skeleton";
+
+const DragAndDropContext = dynamic(
+  () => import("./DragAndDropContext").then((mod) => mod.DragAndDropContext),
+  {
+    ssr: false,
+    loading: () => (
+      <div className=" gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <Skeleton key={i} className="h-20 rounded-md w-full"></Skeleton>
+        ))}
+      </div>
+    ),
+  }
+);
 
 interface MultiImageUpload extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
@@ -126,7 +142,11 @@ const MultiImageUpload = (props: MultiImageUpload) => {
         setFile={setFiles}
       ></DragAndDrop>
       <div className="relative overflow-hidden rounded-lg">
-        {/* <DragAndDropContext></DragAndDropContext> */}
+        <DragAndDropContext
+          replace={handleItemsUpdate}
+          items={items}
+          renderItem={(item) => <SortableItem></SortableItem>}
+        ></DragAndDropContext>
       </div>
     </div>
   );

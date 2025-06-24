@@ -49,6 +49,7 @@ const DragAndDrop = (props: DragAndDropProps) => {
         });
         return;
       }
+
       const fileSizeTooBig = Array.from(e.target.files)
         .filter((file) => file.size > MAX_IMAGE_SIZE)
         .map((file) => file.name);
