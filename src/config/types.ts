@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Classified, Prisma } from "@prisma/client";
 import { ChangeEvent } from "react";
 
 type Params = {
@@ -64,3 +64,16 @@ export interface ProgressArgs {
   percentage: number;
   key?: string;
 }
+
+export type classifiedKeys = keyof Pick<
+  Classified,
+  | "status"
+  | "title"
+  | "vrm"
+  | "id"
+  | "views"
+  | "year"
+  | "color"
+  | "price"
+  | "createdAt"
+>;

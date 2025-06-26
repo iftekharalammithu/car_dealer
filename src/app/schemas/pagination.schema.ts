@@ -28,11 +28,11 @@ export const ValidataPagination = ({ page, itemsPerPage }: PaginationType) => {
     console.log("Validation Error", error);
   }
 
-  //   if (!success) {
-  //     return {
-  //       page: "1",
-  //       itemsPerPage: 10,
-  //     };
-  //   }
+  if (!success) {
+    return {
+      page: "1",
+      itemsPerPage: 10,
+    };
+  }
   return data;
 };
