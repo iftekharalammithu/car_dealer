@@ -11,6 +11,7 @@ import { v4 } from "uuid";
 import DragAndDrop from "./DragAndDrop";
 import dynamic from "next/dynamic";
 import { Skeleton } from "../ui/skeleton";
+import SortableItem from "./SortableItem";
 
 const DragAndDropContext = dynamic(
   () => import("./DragAndDropContext").then((mod) => mod.DragAndDropContext),
@@ -145,7 +146,17 @@ const MultiImageUpload = (props: MultiImageUpload) => {
         <DragAndDropContext
           replace={handleItemsUpdate}
           items={items}
-          renderItem={(item) => <SortableItem></SortableItem>}
+          renderItem={(item) => (
+            <SortableItem
+              key={item.uuid}
+              index={item.id as string}
+              item={item}
+              progress={
+                progress.find((p) => p.uuid === item.uuid)?.progress as number
+              }
+              remove={remove}
+            ></SortableItem>
+          )}
         ></DragAndDropContext>
       </div>
     </div>

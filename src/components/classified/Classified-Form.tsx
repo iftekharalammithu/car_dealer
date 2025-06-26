@@ -17,6 +17,8 @@ import Select from "../ui/select";
 import { Max_Image } from "@/config/constants";
 import { formatClassifiedStatus } from "@/lib/utils";
 import MultiImageUpload from "./MultiImageUpload";
+import { Button } from "../ui/button";
+import { Loader2 } from "lucide-react";
 
 interface ClassifiedFormProps {
   classified: ClassifiedWithImages;
@@ -132,6 +134,16 @@ const Classified_Form = ({ classified }: ClassifiedFormProps) => {
                   </FormItem>
                 )}
               ></FormField>
+              <Button
+                disabled={isPending}
+                className=" flex gap-x-2 w-full "
+                type="submit"
+              >
+                {isPending && (
+                  <Loader2 className=" animate-spin h-4 w-4"></Loader2>
+                )}
+                Submit{" "}
+              </Button>
             </div>
           </div>
         </form>
