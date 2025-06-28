@@ -6,6 +6,7 @@ import {
   ValidateSortOrder,
 } from "@/app/schemas/TableSort.Schema";
 import AdminClassifiedsHeader from "@/components/Admin/Classified/AdminClassifiedsHeader";
+import AdminTableFooter from "@/components/shared/AdminTableFooter";
 import ClassifiedTableHeader from "@/components/classified/ClassifiedTableHeader";
 import ClassifiedTableRow from "@/components/classified/ClassifiedTableRow";
 import { Table, TableBody } from "@/components/ui/table";
@@ -72,7 +73,7 @@ const page = async (props: PageProps) => {
           ))}
         </TableBody>
 
-        {/* <AdminTableFooter></AdminTableFooter> */}
+        <AdminTableFooter></AdminTableFooter>
       </Table>
     </div>
   );

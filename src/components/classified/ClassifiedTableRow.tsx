@@ -2,7 +2,11 @@ import { ClassifiedWithImages } from "@/config/types";
 import React from "react";
 import { TableCell, TableRow } from "../ui/table";
 import Image from "next/image";
-import { formatColor, formatPrice } from "@/lib/utils";
+import { formatClassifiedStatus, formatColor, formatPrice } from "@/lib/utils";
+import { Badge } from "../ui/badge";
+import { classifiedBadgeMap } from "@/config/constants";
+import { format } from "date-fns";
+import ActionButtons from "./ActionButtons";
 
 const ClassifiedTableRow = (classified: ClassifiedWithImages) => {
   return (
@@ -32,10 +36,16 @@ const ClassifiedTableRow = (classified: ClassifiedWithImages) => {
         {formatColor(classified.color)}
       </TableCell>
       <TableCell className="  hidden md:table-cell">
-        {classified.title}
+        <Badge variant={classifiedBadgeMap[classified.status]}>
+          {formatClassifiedStatus(classified.status)}
+        </Badge>
       </TableCell>
       <TableCell className="  hidden md:table-cell">
-        {classified.title}
+        {format(classified.createdAt, "do MMM yyy HH:mm")}
+      </TableCell>
+      <TableCell className="">{classified.views}</TableCell>
+      <TableCell className=" flex gap-x-2">
+        <ActionButtons classified={classified}></ActionButtons>
       </TableCell>
     </TableRow>
   );

@@ -202,3 +202,18 @@ export const updateClassifiedAction = async (data: updateClassifiedType) => {
     return { success: false, message: "Failed to update Classified" };
   }
 };
+
+export const deleteClassifiedAction = async (id: string) => {
+  try {
+    await prisma.classified.delete({
+      where: {
+        id,
+      },
+    });
+    revalidatePath(routes.admin.classifieds);
+    return { success: true, message: "Classified Deleted" };
+  } catch (error) {
+    console.log("Error Deleting Classified:", { error });
+    return { success: false, message: "classified Delete Failed" };
+  }
+};
