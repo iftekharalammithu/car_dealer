@@ -13,12 +13,12 @@ const CustomerKeys2 = [
   "mobile",
   "firstName",
   "lastName",
-  "updateAt",
+  "updatedAt",
   "createdAt",
   "status",
   "bookingDate",
-  "classified",
-];
+  "classfied",
+] as const;
 
 interface CustomerTableProps extends PageProps {
   Customer: Customer[];

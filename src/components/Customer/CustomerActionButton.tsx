@@ -1,13 +1,13 @@
 "use client";
-import { deleteClassifiedAction } from "@/actions/Classified";
-import { ClassifiedWithImages, CustomerWithClassified } from "@/config/types";
+import { CustomerWithClassified } from "@/config/types";
 import React, { useTransition } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { EyeIcon, Loader2, PencilIcon, Trash } from "lucide-react";
+import { Loader2, PencilIcon, Trash } from "lucide-react";
 import Link from "next/link";
 import { routes } from "@/config/route";
 import { Tooltip } from "react-tooltip";
+import { deleteCustomerAction } from "@/actions/customer";
 
 const CustomerActionButtons = ({
   customer,
@@ -15,11 +15,11 @@ const CustomerActionButtons = ({
   customer: CustomerWithClassified;
 }) => {
   const [isPending, startTransition] = useTransition();
-  const deleteClassified = (id: string) => {
+  const deleteCustomer = (id: string) => {
     startTransition(async () => {
-      const result = await deleteClassifiedAction(id);
+      const result = await deleteCustomerAction(id);
       if (result.success) {
-        toast.success("Classified Deleted!", { description: result.message });
+        toast.success("Customer Deleted!", { description: result.message });
       } else {
         toast.error("Error To Deleted!", { description: result.message });
       }
@@ -33,7 +33,7 @@ const CustomerActionButtons = ({
         variant={"destructive"}
         data-tooltip-id="trash-tooltip"
         data-tooltip-content="Delete"
-        onClick={() => deleteClassified(classified.id)}
+        onClick={() => deleteCustomer(customer.id)}
       >
         <Tooltip id="trash-tooltip"></Tooltip>
         {isPending ? (
@@ -42,17 +42,7 @@ const CustomerActionButtons = ({
           <Trash className=" h-4 w-4 animate-spin"></Trash>
         )}
       </Button>
-      <Button
-        data-tooltip-id="view-tooltip"
-        data-tooltip-content="View"
-        className=" p-2 h-fit"
-        asChild
-      >
-        <Tooltip id="view-tooltip"></Tooltip>
-        <Link href={routes.singleClassified(classified.slug)}>
-          <EyeIcon className=" h-4 w-4 animate-spin"></EyeIcon>
-        </Link>
-      </Button>
+
       <Button
         data-tooltip-id="edit-tooltip"
         data-tooltip-content="Edit"
@@ -60,7 +50,7 @@ const CustomerActionButtons = ({
         asChild
       >
         <Tooltip id="edit-tooltip"></Tooltip>
-        <Link href={routes.admin.editclassified(classified.id)}>
+        <Link href={routes.admin.editCustomer(customer.id)}>
           <PencilIcon className=" h-4 w-4 animate-spin"></PencilIcon>
         </Link>
       </Button>
