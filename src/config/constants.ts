@@ -1,4 +1,4 @@
-import { ClassifiedStatus } from "@prisma/client";
+import { ClassifiedStatus, CustomerStatus } from "@prisma/client";
 import { routes } from "./route";
 import { BadgeProps } from "@/components/ui/badge";
 
@@ -28,4 +28,12 @@ export const classifiedBadgeMap: Record<
   [ClassifiedStatus.DRAFT]: "secondary",
   [ClassifiedStatus.LIVE]: "default",
   [ClassifiedStatus.SOLD]: "destructive",
+};
+
+export const CustomerBadgeMap: Record<CustomerStatus, BadgeProps["variant"]> = {
+  [CustomerStatus.COLD]: "secondary",
+  [CustomerStatus.CONTACTED]: "default",
+  [CustomerStatus.INTERESTED]: "destructive",
+  [CustomerStatus.PURCHASED]: "subtle",
+  [CustomerStatus.SUBSCRIBER]: "info",
 };

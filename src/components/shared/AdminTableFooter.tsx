@@ -15,15 +15,13 @@ const itemsPerPageOptions: FilterOptions<string, string> = [
 
 interface AdminTableFooterProps extends AwaitedPageProps {
   disable: boolean;
-  currentPage: number;
   totalPages: number;
   baseURL: string;
   cols: number;
 }
 
 const AdminTableFooter = (props: AdminTableFooterProps) => {
-  const { disable, currentPage, totalPages, baseURL, cols, searchParams } =
-    props;
+  const { disable, totalPages, baseURL, cols, searchParams } = props;
   const itemsPerPage = searchParams?.itemsPerPage || "10";
   const route = useRouter();
 
@@ -66,7 +64,7 @@ const AdminTableFooter = (props: AdminTableFooterProps) => {
                   paginationPrevious: "border-none hover:bg-primary text-muted",
                   paginationNext: "hover:bg-primary text-muted",
                   paginationLink: "border-none hover:bg-primary text-muted",
-                  paginationLinkActive: "bg-primary text-white",
+                  paginationLinkActive: "bg-primary !text-white",
                 }}
               ></CustomPagination>
             </div>

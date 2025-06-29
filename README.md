@@ -31,9 +31,13 @@ The [useActionState](src/actions/subscribe.ts) introduction of Server Actions in
 
 ### => Swiper
 
-[Swiper](src\components\classified\ClassifiedView.tsx) is the most modern free and open source mobile touch slider with hardware accelerated transitions and amazing native behavior. Use it on websites, web apps, and mobile native/hybrid apps.
+[Swiper](src/components/classified/ClassifiedView.tsx) is the most modern free and open source mobile touch slider with hardware accelerated transitions and amazing native behavior. Use it on websites, web apps, and mobile native/hybrid apps.
 
 ### => fslightbox-react
 
-[fslightbox-react] (src\components\classified\ClassifiedView.tsx) An easy to use but powerful plug-in for displaying various types of sources—such as images, HTML videos, or YouTube videos—in a clean overlying box. Supports, among others, captions, thumbnails, and zooming.
+[fslightbox-react](src/components/classified/ClassifiedView.tsx) An easy to use but powerful plug-in for displaying various types of sources—such as images, HTML videos, or YouTube videos—in a clean overlying box. Supports, among others, captions, thumbnails, and zooming.
 Present a single source or create a beautiful gallery with a stylish lightbox without jQuery.
+
+### => react-tooltip
+
+[react-tooltip](src/components/classified/ActionButtons.tsx) A react tooltip is a floating react element that displays information related to an anchor element when it receives keyboard focus or the mouse hovers over it.

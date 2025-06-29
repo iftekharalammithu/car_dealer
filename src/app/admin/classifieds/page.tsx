@@ -12,6 +12,7 @@ import ClassifiedTableRow from "@/components/classified/ClassifiedTableRow";
 import { Table, TableBody } from "@/components/ui/table";
 import { classifiedKeys, PageProps } from "@/config/types";
 import prisma from "@/lib/prismadb";
+import { routes } from "@/config/route";
 
 const page = async (props: PageProps) => {
   const searchParams = await props.searchParams;
@@ -73,7 +74,13 @@ const page = async (props: PageProps) => {
           ))}
         </TableBody>
 
-        <AdminTableFooter></AdminTableFooter>
+        <AdminTableFooter
+          totalPages={totalPages}
+          disable={!classified.length}
+          cols={10}
+          baseURL={routes.admin.classifieds}
+          searchParams={searchParams}
+        ></AdminTableFooter>
       </Table>
     </div>
   );

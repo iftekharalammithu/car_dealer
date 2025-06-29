@@ -18,6 +18,10 @@ export type ClassifiedWithImages = Prisma.ClassifiedGetPayload<{
   include: { images: true };
 }>;
 
+export type CustomerWithClassified = Prisma.CustomerGetPayload<{
+  include: { classfied: true };
+}>;
+
 export enum MultiStapFormEnum {
   WELCOME = 1,
   SELECT_DATE = 2,
@@ -76,4 +80,18 @@ export type classifiedKeys = keyof Pick<
   | "color"
   | "price"
   | "createdAt"
+>;
+
+export type CustomerKeys = keyof Pick<
+  Prisma.CustomerGetPayload<{ include: { classfied: true } }>,
+  | "id"
+  | "email"
+  | "mobile"
+  | "firstName"
+  | "lastName"
+  | "updatedAt"
+  | "createdAt"
+  | "status"
+  | "bookingDate"
+  | "classfied"
 >;

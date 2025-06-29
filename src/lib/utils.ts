@@ -5,6 +5,7 @@ import {
   ClassifiedStatus,
   Color,
   CurrencyCode,
+  CustomerStatus,
   FuelType,
   OdoUnit,
   Prisma,
@@ -283,5 +284,20 @@ export function formatClassifiedStatus(status: ClassifiedStatus) {
       return "Sold";
     case ClassifiedStatus.DRAFT:
       return "Draft";
+  }
+}
+
+export function formatCustomerStatus(status: CustomerStatus) {
+  switch (status) {
+    case CustomerStatus.COLD:
+      return "Cold";
+    case CustomerStatus.CONTACTED:
+      return "Contacted";
+    case CustomerStatus.INTERESTED:
+      return "Interested";
+    case CustomerStatus.PURCHASED:
+      return "Purchased";
+    case CustomerStatus.SUBSCRIBER:
+      return "Subscriber";
   }
 }
