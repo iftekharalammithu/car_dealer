@@ -214,6 +214,9 @@ export const deleteClassifiedAction = async (id: string) => {
     return { success: true, message: "Classified Deleted" };
   } catch (error) {
     console.log("Error Deleting Classified:", { error });
-    return { success: false, message: "classified Delete Failed" };
+    if (error instanceof Error) {
+      return { success: false, message: error.message };
+    }
+    return { success: false, message: "Something went Wrong!" };
   }
 };
