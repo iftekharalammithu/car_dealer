@@ -1,7 +1,7 @@
 import CredentialsProvider from "@auth/core/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prismadb";
-import type { NextAuthConfig, User } from "next-auth";
+import type { NextAuthConfig } from "next-auth";
 import ResendProvider from "@auth/core/providers/resend";
 import { bcryptPasswordCompare } from "@/lib/bcrypt";
 import { SESSION_MAX_AGE } from "@/config/constants";
@@ -9,6 +9,7 @@ import { SignSchema } from "@/app/schemas/Signin.Schema";
 import { routes } from "@/config/route";
 import { issueChallange } from "@/lib/otp";
 import { AdapterUser } from "next-auth/adapters";
+import { User } from "next-auth";
 
 export const config = {
   adapter: PrismaAdapter(prisma),
@@ -87,6 +88,7 @@ export const config = {
       if (!session) {
         return null;
       }
+
       if (user) {
         token.requires2FA = user.requires2FA;
       }
@@ -103,4 +105,4 @@ export const config = {
   jwt: {
     encode: async ({ token }) => token?.id as string,
   },
-} as NextAuthConfig;
+} satisfies NextAuthConfig;

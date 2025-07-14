@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { routes } from "./config/route";
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
 
 function setRequestHeaders(requestHeaders: Headers) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");

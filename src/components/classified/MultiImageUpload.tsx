@@ -1,6 +1,5 @@
 import { updateClassifiedType } from "@/app/schemas/Classified.Schema";
 import { ProgressArgs } from "@/config/types";
-import { generateThumbHashFromSrcUrl } from "@/lib/thumb-hash-server";
 import { generateThumbHashFromFile } from "@/lib/ThumbHash";
 import { Uploader } from "@/lib/Uploader";
 import { cn } from "@/lib/utils";

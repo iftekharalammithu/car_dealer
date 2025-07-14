@@ -113,7 +113,7 @@ const Classified_Form = ({ classified }: ClassifiedFormProps) => {
               <FormField
                 control={form.control}
                 name="status"
-                render={({ field: { ref, ...rest } }) => (
+                render={({ field: { ...rest } }) => (
                   <FormItem>
                     <FormLabel className=" text-muted" htmlFor="status">
                       Status

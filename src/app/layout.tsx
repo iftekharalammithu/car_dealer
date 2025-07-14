@@ -3,8 +3,8 @@ import "./globals.css";
 import { Mulish, Roboto } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
-import NextTopLoader from "nextjs-toploader";
-import { NuqsAdapter } from "nuqs/adapters/next";
+import NextTopLoader from "nextjs-toploader"; // This is use for page loader bar to top of the page
+import { NuqsAdapter } from "nuqs/adapters/next"; // this use for change the url in realtime if data need to be in url for like search
 
 export const metadata: Metadata = {
   title: "Car Dealer",
